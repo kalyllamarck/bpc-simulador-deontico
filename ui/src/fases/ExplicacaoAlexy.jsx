@@ -1,16 +1,19 @@
 /* Explica como a âncora de Alexy (ponderação) opera no código deôntico por trás. */
 import Citacao from '../componentes/Citacao'
+import NotaCitacao from '../componentes/NotaCitacao'
 import { AUTORES } from '../citacoes'
 
 export default function ExplicacaoAlexy({ resultado }) {
   return (
     <div className="flex flex-col gap-4">
       <p className="text-sm leading-relaxed text-observa-petroleo/85">
-        Para Alexy, princípios são <strong>mandados de otimização</strong>: devem ser realizados na maior
-        medida possível, dadas as condições do caso. Quando dois princípios colidem, o método é a
-        <strong> ponderação</strong> — atribuir peso a cada dimensão e ver qual prevalece. No código por trás,
-        cada dimensão recebe um grau (0 a 10) e um peso; a soma das parcelas estrutura o argumento. O sistema
-        não decide: ele só organiza a ponderação para o jurista.
+        Para Alexy, princípios são <strong>mandados de otimização</strong>
+        <NotaCitacao id="DOC002-u01" />: devem ser realizados na maior medida possível, dadas as
+        condições do caso. Quando dois princípios colidem, o método é a<strong> ponderação</strong>{' '}
+        — atribuir peso a cada dimensão e ver qual prevalece. No código por trás, cada dimensão
+        recebe um grau (0 a 10) e um peso; a soma das parcelas estrutura o argumento. A ponderação
+        não fecha o gate sozinha: a IA interpreta e propõe os pesos do resíduo valorativo, e a linha
+        determinística decide.
       </p>
 
       <Citacao

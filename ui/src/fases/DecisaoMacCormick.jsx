@@ -12,6 +12,7 @@ import TresGates from './TresGates'
 import { OrigemDado } from '../componentes/Resultado'
 import { functor } from '../lexico'
 import Citacao from '../componentes/Citacao'
+import NotaCitacao from '../componentes/NotaCitacao'
 import { AUTORES } from '../citacoes'
 
 const CLASSE = {
@@ -38,16 +39,23 @@ export default function DecisaoMacCormick() {
   return (
     <div className="flex flex-col gap-6">
       <p className="text-sm leading-relaxed text-observa-petroleo/80">
-        MacCormick distingue duas camadas de justificação. A primeira é dedutiva: se o caso cabe no silogismo,
-        a conclusão decorre direto. Quando o silogismo não fecha, sobe-se à segunda ordem, que pergunta se a
-        decisão é universalizável, consistente com o sistema e coerente com seus princípios. O sistema percorre
-        as camadas; a decisão final é do jurista.
+        MacCormick distingue duas camadas de justificação
+        <NotaCitacao id="MC01-u01" />. A primeira é dedutiva: se o caso cabe no silogismo, a
+        conclusão decorre direto. Quando o silogismo não fecha, sobe-se à segunda ordem, que
+        pergunta se a decisão é universalizável, consistente com o sistema e coerente com seus
+        princípios. Quando o silogismo fecha, o sistema aplica a norma e a conclusão decorre da
+        subsunção; quando não fecha, estrutura a justificação de 2ª ordem e, persistindo a
+        indeterminação, o caso escala para o estudo social.
       </p>
 
       <Citacao
         rotulo="Neil MacCormick — justificação de 2ª ordem"
         texto="Quando a dedução não basta, a decisão deve ser universalizável, consistente com as normas válidas e coerente com os princípios do sistema jurídico."
-        fonte={{ titulo: AUTORES.maccormick.obra, abnt: AUTORES.maccormick.abnt, print: AUTORES.maccormick.print }}
+        fonte={{
+          titulo: AUTORES.maccormick.obra,
+          abnt: AUTORES.maccormick.abnt,
+          print: AUTORES.maccormick.print,
+        }}
       />
 
       <div>
