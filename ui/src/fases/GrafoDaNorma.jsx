@@ -22,18 +22,6 @@ import { DISPOSITIVOS } from '../citacoes'
 
 const tiposDeNo = { condicao: NoCondicao, terminal: NoEstadoTerminal }
 
-/* Posições fixas — leitura de cima para baixo, na ordem da lei. */
-const POSICOES = {
-  p04: { x: 320, y: 0 },
-  caput: { x: 320, y: 120 },
-  p02: { x: 320, y: 240 },
-  p03: { x: 320, y: 360 },
-  p11: { x: 320, y: 480 },
-  F: { x: 40, y: 300 },
-  O: { x: 600, y: 420 },
-  IND: { x: 320, y: 600 },
-}
-
 export default function GrafoDaNorma() {
   const [grafo, setGrafo] = useState(null)
 
@@ -41,15 +29,25 @@ export default function GrafoDaNorma() {
     obterGrafo().then(setGrafo)
   }, [])
 
+  /* Layout calculado pela ORDEM e TIPO dos nós (robusto aos ids que o motor devolver):
+   * as decisões descem numa coluna (ordem da lei); os três desfechos ficam à direita. */
   const nodes = useMemo(() => {
     if (!grafo) return []
-    return grafo.nos.map((n) => ({
-      id: n.id,
-      type: n.tipo === 'terminal' ? 'terminal' : 'condicao',
-      position: POSICOES[n.id] || { x: 0, y: 0 },
-      data: { rotulo: n.rotulo, dispositivo: n.dispositivo },
-      draggable: true,
-    }))
+    let iDecisao = 0
+    let iTerminal = 0
+    return grafo.nos.map((n) => {
+      const ehTerminal = n.tipo === 'terminal'
+      const position = ehTerminal
+        ? { x: 680, y: 80 + iTerminal++ * 180 }
+        : { x: 300, y: iDecisao++ * 135 }
+      return {
+        id: n.id,
+        type: ehTerminal ? 'terminal' : 'condicao',
+        position,
+        data: { rotulo: n.rotulo, dispositivo: n.dispositivo },
+        draggable: true,
+      }
+    })
   }, [grafo])
 
   const edges = useMemo(() => {
