@@ -67,7 +67,7 @@ export async function simularValoracao(requerente) {
     if (!r.ok) throw new Error(`motor respondeu ${r.status}`)
     const dados = await r.json()
     return { ...dados, _origem: 'motor' }
-  } catch (e) {
+  } catch {
     // Sem motor no ar: escolhe o exemplo coerente com a entrada, para a demonstração.
     const exemplo = escolherExemploValoracao(requerente)
     return { ...exemplo, _origem: 'exemplo' }
@@ -82,9 +82,13 @@ function escolherExemploValoracao(req) {
   const perCapita = Math.floor(rendaTotal / membros)
   const teto = Math.floor((req.salario_minimo_centavos || 141200) / 4)
   if (req.acumula_beneficio) return EXEMPLOS_VALORACAO.F_CONCEDER
-  if (perCapita <= teto) return { ...EXEMPLOS_VALORACAO.O_CONCEDER, renda_per_capita_centavos: perCapita }
+  if (perCapita <= teto)
+    return { ...EXEMPLOS_VALORACAO.O_CONCEDER, renda_per_capita_centavos: perCapita }
   if (req.escore_miserabilidade == null) {
-    return { ...EXEMPLOS_VALORACAO.INDETERMINADO_VALORACAO_HUMANA, renda_per_capita_centavos: perCapita }
+    return {
+      ...EXEMPLOS_VALORACAO.INDETERMINADO_VALORACAO_HUMANA,
+      renda_per_capita_centavos: perCapita,
+    }
   }
   return { ...EXEMPLOS_VALORACAO.F_CONCEDER, renda_per_capita_centavos: perCapita }
 }
@@ -100,7 +104,7 @@ const AVISO_HONESTO =
   'orçamentária; NÃO é declaração de inconstitucionalidade. O BPC é assistência social ' +
   '(art. 203, V), custeado pelo orçamento, e não seguro contributivo do art. 201; o elo ' +
   'com o equilíbrio do art. 201 é argumentativo (pressão sobre a seguridade), não ' +
-  'automático. Quem decide é o jurista, não a máquina.'
+  'automático: é um indicador, não um veredito.'
 
 export async function simularImpacto(parametro, valor_novo, elasticidade_hipotese = null) {
   try {
@@ -113,7 +117,7 @@ export async function simularImpacto(parametro, valor_novo, elasticidade_hipotes
     if (!r.ok) throw new Error(`motor respondeu ${r.status}`)
     const dados = await r.json()
     return { ...dados, _origem: 'motor' }
-  } catch (e) {
+  } catch {
     return { ...exemploImpacto(parametro, valor_novo, elasticidade_hipotese), _origem: 'exemplo' }
   }
 }
@@ -202,39 +206,81 @@ function exemploImpacto(parametro, valor_novo, elasticidade_hipotese) {
  * três functores. A complexidade é apresentada "conforme a Lei", não como métrica
  * de software.
  */
+// ESPELHO EXATO do motor (dominios/grafo/bpc_grafo_ciclomatico.py): MESMOS ids, MESMAS
+// arestas. Assim o grafo funciona idêntico online e offline (sem alias de ids). As
+// `condicao` são descritivas (como o motor), não "sim/não": a cor vem do tipo do destino.
 const GRAFO_DEMO = {
   nos: [
-    { id: 'p04', rotulo: 'Acumula benefício vedado?', dispositivo: 'Art. 20, §4º', tipo: 'condicao' },
-    { id: 'caput', rotulo: 'Integra o público (idoso 65+ ou com deficiência)?', dispositivo: 'Art. 20, caput', tipo: 'condicao' },
-    { id: 'p02', rotulo: 'Impedimento de longo prazo (≥ 2 anos)?', dispositivo: 'Art. 20, §2º e §10', tipo: 'condicao' },
-    { id: 'p03', rotulo: 'Renda per capita < ¼ do salário mínimo?', dispositivo: 'Art. 20, §3º', tipo: 'condicao' },
-    { id: 'p11', rotulo: 'Miserabilidade afasta a presunção do ¼?', dispositivo: 'Art. 20, §11', tipo: 'condicao' },
-    { id: 'F', rotulo: 'F_CONCEDER', dispositivo: 'Art. 20 (síntese)', tipo: 'terminal' },
-    { id: 'O', rotulo: 'O_CONCEDER', dispositivo: 'Art. 20 (síntese)', tipo: 'terminal' },
-    { id: 'IND', rotulo: 'INDETERMINADO_VALORACAO_HUMANA', dispositivo: 'Art. 20, §11 (síntese)', tipo: 'terminal' },
+    { id: 'R6', rotulo: 'Acumula benefício vedado?', dispositivo: 'art. 20, §4º', tipo: 'decisao' },
+    {
+      id: 'R1',
+      rotulo: 'Integra o público (idoso 65+ ou deficiente)?',
+      dispositivo: 'art. 20, caput',
+      tipo: 'decisao',
+    },
+    {
+      id: 'R2',
+      rotulo: 'Impedimento de longo prazo (≥ 2 anos)?',
+      dispositivo: 'art. 20, §2º + §10',
+      tipo: 'decisao',
+    },
+    {
+      id: 'R3',
+      rotulo: 'Renda per capita dentro do ¼ do salário mínimo?',
+      dispositivo: 'art. 20, §3º',
+      tipo: 'decisao',
+    },
+    {
+      id: 'R5R4',
+      rotulo: 'Camada valorativa: miserabilidade comprovada (§11)?',
+      dispositivo: 'art. 20, §11',
+      tipo: 'decisao',
+    },
+    {
+      id: 'O_CONCEDER',
+      rotulo: 'Obrigatório conceder',
+      dispositivo: 'art. 20 (R7)',
+      tipo: 'terminal',
+    },
+    { id: 'F_CONCEDER', rotulo: 'Proibido conceder', dispositivo: 'art. 20', tipo: 'terminal' },
+    {
+      id: 'INDETERMINADO_VALORACAO_HUMANA',
+      rotulo: 'Indeterminado — exige valoração humana',
+      dispositivo: 'art. 20, §11',
+      tipo: 'terminal',
+    },
   ],
   arestas: [
-    { de: 'p04', para: 'F', condicao: 'sim' },
-    { de: 'p04', para: 'caput', condicao: 'não' },
-    { de: 'caput', para: 'F', condicao: 'não' },
-    { de: 'caput', para: 'p02', condicao: 'sim' },
-    { de: 'p02', para: 'F', condicao: 'não' },
-    { de: 'p02', para: 'p03', condicao: 'sim' },
-    { de: 'p03', para: 'O', condicao: 'sim' },
-    { de: 'p03', para: 'p11', condicao: 'não' },
-    { de: 'p11', para: 'O', condicao: 'sim' },
-    { de: 'p11', para: 'IND', condicao: 'não' },
+    { de: 'R6', para: 'F_CONCEDER', condicao: 'acumula benefício vedado' },
+    { de: 'R6', para: 'R1', condicao: 'não acumula' },
+    { de: 'R1', para: 'F_CONCEDER', condicao: 'não integra o público' },
+    { de: 'R1', para: 'R2', condicao: 'integra o público' },
+    { de: 'R2', para: 'F_CONCEDER', condicao: 'deficiente sem impedimento de longo prazo' },
+    { de: 'R2', para: 'R3', condicao: 'impedimento de longo prazo satisfeito' },
+    { de: 'R3', para: 'O_CONCEDER', condicao: 'renda dentro do ¼ do salário mínimo' },
+    { de: 'R3', para: 'R5R4', condicao: 'renda acima do ¼ do salário mínimo' },
+    {
+      de: 'R5R4',
+      para: 'O_CONCEDER',
+      condicao: 'R5: miserabilidade comprovada derrota a regra-geral',
+    },
+    { de: 'R5R4', para: 'F_CONCEDER', condicao: 'R4: miserabilidade afastada barra a concessão' },
+    {
+      de: 'R5R4',
+      para: 'INDETERMINADO_VALORACAO_HUMANA',
+      condicao: 'miserabilidade por resolver (grau ausente ou sem convergência)',
+    },
   ],
   complexidade: {
     decisoes: 5,
-    caminhos: 6,
-    ciclomatica: 6,
+    caminhos: 7,
+    ciclomatica: 5,
   },
   explicacao:
     'A complexidade não é defeito: ela reproduz a própria estrutura do art. 20 da LOAS. ' +
-    'São cinco decisões (uma por dispositivo) que, combinadas, geram seis caminhos até um ' +
-    'dos três desfechos da norma. A medida ciclomática (decisões + 1) apenas conta esses ' +
-    'caminhos — é o retrato fiel da lei, não uma escolha do sistema.',
+    'São cinco pontos de decisão (um por dispositivo) e sete caminhos até um dos três ' +
+    'desfechos da norma; a medida ciclomática (arestas − nós + 2) apenas conta a densidade ' +
+    'condicional — é o retrato fiel da lei, não uma escolha do sistema.',
 }
 
 export async function obterGrafo() {
@@ -243,7 +289,7 @@ export async function obterGrafo() {
     if (!r.ok) throw new Error(`motor respondeu ${r.status}`)
     const dados = await r.json()
     return { ...dados, _origem: 'motor' }
-  } catch (e) {
+  } catch {
     return { ...GRAFO_DEMO, _origem: 'exemplo' }
   }
 }
@@ -263,7 +309,7 @@ export async function valorar(requerente, ancora) {
     if (!r.ok) throw new Error(`motor respondeu ${r.status}`)
     const dados = await r.json()
     return { ...dados, _origem: 'motor' }
-  } catch (e) {
+  } catch {
     return { ...exemploValoracaoMetodologica(ancora), _origem: 'exemplo' }
   }
 }
@@ -280,7 +326,7 @@ function exemploValoracaoMetodologica(ancora) {
         'que o programa normativo recorta como juridicamente relevante.',
       tensao:
         'A concretização confronta programa e âmbito: o caso concreto cabe no recorte da norma, ' +
-        'mas a decisão final cabe ao jurista, não à máquina.',
+        'mas o resíduo valorativo persiste — havendo indeterminação, o caso escala para o estudo social.',
       decide: false,
     }
   }
@@ -293,7 +339,8 @@ function exemploValoracaoMetodologica(ancora) {
     ],
     peso_total: 6.65,
     ressalva:
-      'A ponderação estrutura o argumento; ela não substitui a decisão do jurista. ' +
+      'A ponderação estrutura o argumento; ela não fecha o gate sozinha — a IA propõe os ' +
+      'pesos do resíduo valorativo e a linha determinística decide. ' +
       'Os pesos são ilustrativos e dependem do caso concreto.',
     decide: false,
   }
@@ -302,7 +349,7 @@ function exemploValoracaoMetodologica(ancora) {
 /* ─── Fase 4 — Decisão (MacCormick: silogismo + três gates) ─────────────────────
  * Espelha POST /decidir-maccormick. Primeiro tenta a justificação de 1ª ordem
  * (silogismo dedutivo). Se não fecha, sobe à 2ª ordem (universalizabilidade,
- * consistência, coerência). Os "gates" são portões deônticos, não da máquina.
+ * consistência, coerência) — os portões da justificação de 2ª ordem de MacCormick.
  */
 export async function decidirMacCormick(requerente) {
   try {
@@ -315,7 +362,7 @@ export async function decidirMacCormick(requerente) {
     if (!r.ok) throw new Error(`motor respondeu ${r.status}`)
     const dados = await r.json()
     return { ...dados, _origem: 'motor' }
-  } catch (e) {
+  } catch {
     return { ...exemploMacCormick(requerente), _origem: 'exemplo' }
   }
 }
@@ -370,8 +417,8 @@ function exemploMacCormick(req) {
         passou: false,
         explicacao:
           'A decisão se harmoniza com os princípios do sistema (dignidade, mínimo existencial) ' +
-          'sem ferir o equilíbrio do art. 201? Aqui o juízo é valorativo e cabe ao jurista — ' +
-          'o sistema não fecha a coerência sozinho.',
+          'sem ferir o equilíbrio do art. 201? Aqui o juízo é valorativo: persistindo a ' +
+          'indeterminação, o caso escala para o estudo social — o sistema não fecha a coerência sozinho.',
       },
     ],
     functor_final: 'INDETERMINADO_VALORACAO_HUMANA',

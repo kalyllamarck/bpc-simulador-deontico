@@ -1,96 +1,81 @@
-/* Fase 1 — Grafo da norma.
+/* Fase 3 — Grafo interativo dos §§.
  *
- * Canvas (React Flow) que mostra a complexidade do art. 20: cada condição é um nó
- * (vedação §4º, público caput, impedimento §2º+§10, renda §3º, miserabilidade §11)
- * e as arestas sim/não levam às três folhas (os functores). Os dados vêm de
- * GET /grafo, com fallback offline embutido no api.js.
+ * Canvas (React Flow) NAVEGÁVEL que mostra a complexidade do art. 20: cada condição é um
+ * nó (vedação §4º, público caput, impedimento §2º+§10, renda §3º, miserabilidade §11) e
+ * as arestas levam aos três functores. Clicar num nó abre o DRILL-DOWN (PainelDispositivo)
+ * com o dispositivo e sua tradução deôntica. Dados de GET /grafo (fallback offline igual).
+ * O canvas é lazy-loaded (bundle leve em mobile).
  */
-import { useEffect, useMemo, useState } from 'react'
-import {
-  ReactFlow,
-  Background,
-  Controls,
-  MarkerType,
-} from '@xyflow/react'
-import '@xyflow/react/dist/style.css'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import { obterGrafo } from '../api'
-import NoCondicao from './NoCondicao'
-import NoEstadoTerminal from './NoEstadoTerminal'
 import PainelComplexidade from './PainelComplexidade'
+import PainelDispositivo from './PainelDispositivo'
 import Citacao from '../componentes/Citacao'
 import { DISPOSITIVOS } from '../citacoes'
+import { Revelar } from '../animacao/Revelar'
 
-const tiposDeNo = { condicao: NoCondicao, terminal: NoEstadoTerminal }
+const GrafoCanvas = lazy(() => import('./GrafoCanvas'))
 
 export default function GrafoDaNorma() {
   const [grafo, setGrafo] = useState(null)
+  const [noSel, setNoSel] = useState(null)
 
   useEffect(() => {
     obterGrafo().then(setGrafo)
   }, [])
 
-  /* Layout calculado pela ORDEM e TIPO dos nós (robusto aos ids que o motor devolver):
-   * as decisões descem numa coluna (ordem da lei); os três desfechos ficam à direita. */
-  const nodes = useMemo(() => {
-    if (!grafo) return []
-    let iDecisao = 0
-    let iTerminal = 0
-    return grafo.nos.map((n) => {
-      const ehTerminal = n.tipo === 'terminal'
-      const position = ehTerminal
-        ? { x: 680, y: 80 + iTerminal++ * 180 }
-        : { x: 300, y: iDecisao++ * 135 }
-      return {
-        id: n.id,
-        type: ehTerminal ? 'terminal' : 'condicao',
-        position,
-        data: { rotulo: n.rotulo, dispositivo: n.dispositivo },
-        draggable: true,
-      }
-    })
-  }, [grafo])
-
-  const edges = useMemo(() => {
-    if (!grafo) return []
-    return grafo.arestas.map((a, i) => ({
-      id: `e${i}`,
-      source: a.de,
-      target: a.para,
-      label: a.condicao,
-      labelStyle: { fontSize: 11, fill: '#3d4f4f', fontWeight: 600 },
-      labelBgStyle: { fill: '#ffffff' },
-      style: { stroke: a.condicao === 'sim' ? '#27ae60' : '#c0392b', strokeWidth: 1.5 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: a.condicao === 'sim' ? '#27ae60' : '#c0392b' },
-    }))
-  }, [grafo])
+  const noSelecionado = grafo?.nos.find((n) => n.id === noSel) || null
 
   return (
     <div className="flex flex-col gap-6">
-      <p className="text-sm leading-relaxed text-observa-petroleo/80">
-        A norma do art. 20 da LOAS não é uma regra única: é um encadeamento de condições. Este mapa
-        mostra cada decisão e os caminhos até um dos três desfechos. Verde = a condição foi satisfeita;
-        vermelho = a condição barrou. A máquina apenas percorre este caminho; quem decide é o jurista.
-      </p>
+      <Revelar>
+        <p className="text-sm leading-relaxed text-observa-petroleo/80">
+          A norma do art. 20 da LOAS não é uma regra única: é um encadeamento de condições. Este
+          mapa é <strong>navegável</strong> — arraste para mover, dê <strong>zoom</strong> e{' '}
+          <strong>clique num nó</strong> para estudar aquele comando da lei. Verde = condição
+          satisfeita; vermelho = condição barrou; amarelo = indeterminado. O sistema aplica a norma
+          percorrendo este caminho por subsunção; o jurista só entra externamente, no estudo social,
+          quando o estado fica indeterminado.
+        </p>
+      </Revelar>
 
       <Citacao
         rotulo={DISPOSITIVOS.caput.rotulo}
         texto={DISPOSITIVOS.caput.texto}
-        fonte={{ titulo: 'Lei nº 8.742/1993 (LOAS)', abnt: 'BRASIL. Lei nº 8.742, de 7 de dezembro de 1993. Dispõe sobre a organização da Assistência Social (LOAS).', print: DISPOSITIVOS.caput.print }}
+        fonte={{
+          titulo: 'Lei nº 8.742/1993 (LOAS)',
+          abnt: 'BRASIL. Lei nº 8.742, de 7 de dezembro de 1993. Dispõe sobre a organização da Assistência Social (LOAS).',
+          print: DISPOSITIVOS.caput.print,
+        }}
       />
 
       <div className="h-[620px] w-full rounded-marca border border-observa-borda bg-observa-fundo shadow-carta">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          nodeTypes={tiposDeNo}
-          fitView
-          proOptions={{ hideAttribution: true }}
-          nodesConnectable={false}
-        >
-          <Background color="#ccd1d9" gap={20} />
-          <Controls showInteractive={false} />
-        </ReactFlow>
+        {grafo ? (
+          <Suspense
+            fallback={
+              <div className="flex h-full items-center justify-center text-sm text-observa-petroleo/60">
+                Carregando o grafo…
+              </div>
+            }
+          >
+            <GrafoCanvas grafo={grafo} onSelecionarNo={setNoSel} />
+          </Suspense>
+        ) : (
+          <div className="flex h-full items-center justify-center text-sm text-observa-petroleo/60">
+            Carregando o grafo…
+          </div>
+        )}
       </div>
+
+      {/* Drill-down do nó clicado */}
+      {noSelecionado && (
+        <PainelDispositivo
+          noId={noSelecionado.id}
+          rotulo={noSelecionado.rotulo}
+          dispositivo={noSelecionado.dispositivo}
+          onFechar={() => setNoSel(null)}
+        />
+      )}
 
       {grafo && (
         <PainelComplexidade complexidade={grafo.complexidade} explicacao={grafo.explicacao} />
