@@ -196,3 +196,184 @@ function exemploImpacto(parametro, valor_novo, elasticidade_hipotese) {
     aviso: AVISO_HONESTO,
   }
 }
+
+/* ─── Fase 1 — Grafo da norma (complexidade ciclomática) ───────────────────────
+ * Espelha GET /grafo: nós = condições do art. 20; arestas sim/não; folhas = os
+ * três functores. A complexidade é apresentada "conforme a Lei", não como métrica
+ * de software.
+ */
+const GRAFO_DEMO = {
+  nos: [
+    { id: 'p04', rotulo: 'Acumula benefício vedado?', dispositivo: 'Art. 20, §4º', tipo: 'condicao' },
+    { id: 'caput', rotulo: 'Integra o público (idoso 65+ ou com deficiência)?', dispositivo: 'Art. 20, caput', tipo: 'condicao' },
+    { id: 'p02', rotulo: 'Impedimento de longo prazo (≥ 2 anos)?', dispositivo: 'Art. 20, §2º e §10', tipo: 'condicao' },
+    { id: 'p03', rotulo: 'Renda per capita < ¼ do salário mínimo?', dispositivo: 'Art. 20, §3º', tipo: 'condicao' },
+    { id: 'p11', rotulo: 'Miserabilidade afasta a presunção do ¼?', dispositivo: 'Art. 20, §11', tipo: 'condicao' },
+    { id: 'F', rotulo: 'F_CONCEDER', dispositivo: 'Art. 20 (síntese)', tipo: 'terminal' },
+    { id: 'O', rotulo: 'O_CONCEDER', dispositivo: 'Art. 20 (síntese)', tipo: 'terminal' },
+    { id: 'IND', rotulo: 'INDETERMINADO_VALORACAO_HUMANA', dispositivo: 'Art. 20, §11 (síntese)', tipo: 'terminal' },
+  ],
+  arestas: [
+    { de: 'p04', para: 'F', condicao: 'sim' },
+    { de: 'p04', para: 'caput', condicao: 'não' },
+    { de: 'caput', para: 'F', condicao: 'não' },
+    { de: 'caput', para: 'p02', condicao: 'sim' },
+    { de: 'p02', para: 'F', condicao: 'não' },
+    { de: 'p02', para: 'p03', condicao: 'sim' },
+    { de: 'p03', para: 'O', condicao: 'sim' },
+    { de: 'p03', para: 'p11', condicao: 'não' },
+    { de: 'p11', para: 'O', condicao: 'sim' },
+    { de: 'p11', para: 'IND', condicao: 'não' },
+  ],
+  complexidade: {
+    decisoes: 5,
+    caminhos: 6,
+    ciclomatica: 6,
+  },
+  explicacao:
+    'A complexidade não é defeito: ela reproduz a própria estrutura do art. 20 da LOAS. ' +
+    'São cinco decisões (uma por dispositivo) que, combinadas, geram seis caminhos até um ' +
+    'dos três desfechos da norma. A medida ciclomática (decisões + 1) apenas conta esses ' +
+    'caminhos — é o retrato fiel da lei, não uma escolha do sistema.',
+}
+
+export async function obterGrafo() {
+  try {
+    const r = await fetch(`${BASE}/grafo`, { signal: AbortSignal.timeout?.(4000) })
+    if (!r.ok) throw new Error(`motor respondeu ${r.status}`)
+    const dados = await r.json()
+    return { ...dados, _origem: 'motor' }
+  } catch (e) {
+    return { ...GRAFO_DEMO, _origem: 'exemplo' }
+  }
+}
+
+/* ─── Fase 3 — Valoração (âncora metodológica Alexy | Müller) ───────────────────
+ * Espelha POST /valorar. A âncora é explícita; o sistema NÃO decide (decide:false):
+ * apenas estrutura o argumento conforme o método escolhido pelo jurista.
+ */
+export async function valorar(requerente, ancora) {
+  try {
+    const r = await fetch(`${BASE}/valorar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...requerente, ancora }),
+      signal: AbortSignal.timeout?.(4000),
+    })
+    if (!r.ok) throw new Error(`motor respondeu ${r.status}`)
+    const dados = await r.json()
+    return { ...dados, _origem: 'motor' }
+  } catch (e) {
+    return { ...exemploValoracaoMetodologica(ancora), _origem: 'exemplo' }
+  }
+}
+
+function exemploValoracaoMetodologica(ancora) {
+  if (ancora === 'muller') {
+    return {
+      ancora: 'muller',
+      programa:
+        'Programa da norma: o §11 abre o ¼ do salário mínimo a outros elementos probatórios ' +
+        'de miserabilidade — o texto não esgota a hipótese de incapacidade econômica.',
+      ambito:
+        'Âmbito da norma: a realidade do grupo familiar (gastos com saúde, moradia, dependentes) ' +
+        'que o programa normativo recorta como juridicamente relevante.',
+      tensao:
+        'A concretização confronta programa e âmbito: o caso concreto cabe no recorte da norma, ' +
+        'mas a decisão final cabe ao jurista, não à máquina.',
+      decide: false,
+    }
+  }
+  return {
+    ancora: 'alexy',
+    dimensoes: [
+      { nome: 'Dignidade da pessoa humana', escore: 8, peso: 0.4, parcela: 3.2 },
+      { nome: 'Mínimo existencial', escore: 7, peso: 0.35, parcela: 2.45 },
+      { nome: 'Equilíbrio orçamentário (art. 201)', escore: 4, peso: 0.25, parcela: 1.0 },
+    ],
+    peso_total: 6.65,
+    ressalva:
+      'A ponderação estrutura o argumento; ela não substitui a decisão do jurista. ' +
+      'Os pesos são ilustrativos e dependem do caso concreto.',
+    decide: false,
+  }
+}
+
+/* ─── Fase 4 — Decisão (MacCormick: silogismo + três gates) ─────────────────────
+ * Espelha POST /decidir-maccormick. Primeiro tenta a justificação de 1ª ordem
+ * (silogismo dedutivo). Se não fecha, sobe à 2ª ordem (universalizabilidade,
+ * consistência, coerência). Os "gates" são portões deônticos, não da máquina.
+ */
+export async function decidirMacCormick(requerente) {
+  try {
+    const r = await fetch(`${BASE}/decidir-maccormick`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requerente),
+      signal: AbortSignal.timeout?.(4000),
+    })
+    if (!r.ok) throw new Error(`motor respondeu ${r.status}`)
+    const dados = await r.json()
+    return { ...dados, _origem: 'motor' }
+  } catch (e) {
+    return { ...exemploMacCormick(requerente), _origem: 'exemplo' }
+  }
+}
+
+function exemploMacCormick(req) {
+  const rendaTotal = (req?.familia || []).reduce((s, m) => s + (m.renda_centavos || 0), 0)
+  const membros = (req?.familia || []).length || 1
+  const perCapita = Math.floor(rendaTotal / membros)
+  const teto = Math.floor((req?.salario_minimo_centavos || 141200) / 4)
+  const fechaDireto = perCapita < teto && !req?.acumula_beneficio
+
+  if (fechaDireto) {
+    return {
+      silogismo: {
+        fecha: true,
+        rastro: [
+          'Premissa maior: a norma do art. 20 obriga a conceder a quem integra o público e tem renda per capita inferior a ¼ do salário mínimo.',
+          'Premissa menor: o caso integra o público e a renda per capita está abaixo do ¼.',
+          'Conclusão: dever de conceder, por subsunção dedutiva (justificação de 1ª ordem).',
+        ],
+      },
+      gates: null,
+      functor_final: 'O_CONCEDER',
+    }
+  }
+  return {
+    silogismo: {
+      fecha: false,
+      rastro: [
+        'Premissa maior: a norma exige renda per capita inferior a ¼ do salário mínimo.',
+        'Premissa menor: a renda per capita do caso supera o ¼, mas o §11 admite outros elementos de miserabilidade.',
+        'Conclusão: o silogismo de 1ª ordem não fecha — sobe-se à justificação de 2ª ordem.',
+      ],
+    },
+    gates: [
+      {
+        nome: 'Universalizabilidade',
+        passou: true,
+        explicacao:
+          'A solução proposta para este caso poderia ser aplicada a todos os casos iguais? ' +
+          'Sim: tratar como miserável quem comprova vulnerabilidade equivalente é regra universalizável.',
+      },
+      {
+        nome: 'Consistência',
+        passou: true,
+        explicacao:
+          'A decisão não contraria norma válida do sistema? Não há conflito com regra vigente — ' +
+          'o §11 expressamente autoriza outros elementos probatórios.',
+      },
+      {
+        nome: 'Coerência',
+        passou: false,
+        explicacao:
+          'A decisão se harmoniza com os princípios do sistema (dignidade, mínimo existencial) ' +
+          'sem ferir o equilíbrio do art. 201? Aqui o juízo é valorativo e cabe ao jurista — ' +
+          'o sistema não fecha a coerência sozinho.',
+      },
+    ],
+    functor_final: 'INDETERMINADO_VALORACAO_HUMANA',
+  }
+}

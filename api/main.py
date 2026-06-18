@@ -27,9 +27,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
+from dominios.decisao import maccormick_justificacao as motor_maccormick
+from dominios.grafo import bpc_grafo_ciclomatico as motor_grafo
 from dominios.impacto import impacto as motor_impacto
 from dominios.norma import bpc_conclusao_deontica as motor_norma
 from dominios.norma.bpc_art20_p01_familia import MembroFamilia
+from dominios.valoracao import alexy_formula_peso, muller_programa_ambito
 
 app = FastAPI(
     title="Simulador deôntico do BPC — ObservaSocial",
@@ -66,10 +69,9 @@ class RequerenteEntrada(BaseModel):
     escore_miserabilidade: float | None = None
 
 
-@app.post("/simular")
-def simular(entrada: RequerenteEntrada) -> dict:
-    """Aplica a conclusão deôntica do art. 20 e devolve {conclusao, rastro, ...}."""
-    requerente = motor_norma.Requerente(
+def _montar_requerente(entrada: RequerenteEntrada) -> motor_norma.Requerente:
+    """Monta o Requerente (art. 20) a partir da entrada Pydantic. Reusado pelos endpoints."""
+    return motor_norma.Requerente(
         familia=[
             MembroFamilia(renda_centavos=m.renda_centavos, papel=m.papel)
             for m in entrada.familia
@@ -81,7 +83,12 @@ def simular(entrada: RequerenteEntrada) -> dict:
         salario_minimo_centavos=entrada.salario_minimo_centavos,
         escore_miserabilidade=entrada.escore_miserabilidade,
     )
-    return motor_norma.simular(requerente)
+
+
+@app.post("/simular")
+def simular(entrada: RequerenteEntrada) -> dict:
+    """Aplica a conclusão deôntica do art. 20 e devolve {conclusao, rastro, ...}."""
+    return motor_norma.simular(_montar_requerente(entrada))
 
 
 # ─── Tela 2 — Impacto ──────────────────────────────────────────────────────────
@@ -106,10 +113,58 @@ def impacto(entrada: ImpactoEntrada) -> dict:
     )
 
 
+# ─── Grafo ciclomático — estrutura de decisão da norma ───────────────────────────
+
+@app.get("/grafo")
+def grafo() -> dict:
+    """Expõe o grafo de fluxo de controle do art. 20 e a complexidade ciclomática."""
+    return motor_grafo.grafo()
+
+
+# ─── Valoração doutrinária (expositiva) — Alexy ou Müller ────────────────────────
+
+class ValorarEntrada(RequerenteEntrada):
+    """Os fatos do requerente + a âncora doutrinária e escores opcionais (Alexy)."""
+
+    ancora: str = "alexy"  # "alexy" | "muller"
+    escores: dict | None = None
+
+
+@app.post("/valorar")
+def valorar(entrada: ValorarEntrada) -> dict:
+    """Expõe o sopesamento (Alexy) ou o enquadramento programa×âmbito (Müller). Não decide."""
+    if entrada.ancora == "alexy":
+        return alexy_formula_peso.expor(entrada.escores or {})
+    if entrada.ancora == "muller":
+        requerente = _montar_requerente(entrada)
+        caso = {
+            "familia": entrada.familia,
+            "idade": entrada.idade,
+            "deficiente": entrada.deficiente,
+            "renda_per_capita_centavos": motor_norma.renda_per_capita(requerente),
+        }
+        return muller_programa_ambito.enquadrar(caso)
+    return {"erro": f"âncora desconhecida: {entrada.ancora!r} (use 'alexy' ou 'muller')"}
+
+
+# ─── Justificação de MacCormick (silogismo + 3 gates) ────────────────────────────
+
+@app.post("/decidir-maccormick")
+def decidir_maccormick(entrada: RequerenteEntrada) -> dict:
+    """Expõe a justificação de MacCormick: silogismo de 1ª ordem e, se não fecha, 3 gates."""
+    return motor_maccormick.justificar(_montar_requerente(entrada))
+
+
 @app.get("/")
 def raiz() -> dict:
     return {
         "motor": "Simulador deôntico do BPC — ObservaSocial",
-        "caminhos": ["POST /simular", "POST /impacto"],
+        "caminhos": [
+            "POST /simular",
+            "POST /impacto",
+            "GET /grafo",
+            "POST /valorar",
+            "POST /decidir-maccormick",
+        ],
         "aviso": "A API transporta dados; a norma vive em dominios/. A IA não decide.",
     }
