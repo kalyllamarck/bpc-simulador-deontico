@@ -17,8 +17,8 @@ import json
 from dataclasses import dataclass
 
 from oficina.hibrido import (
-    Proposta,
     Propositor,
+    Proposta,
     avaliar_convergencia,  # re-exportado p/ quem importar daqui
     decidir,
     rodar,
@@ -110,7 +110,7 @@ def valorar_eixo(
             "convergiu": False,
             "escore": None,
             "bit": conv.bit,
-            "flag": None,  # escala humana: o jurista decide na mão
+            "flag": None,  # indeterminação valorativa → escalada para estudo social (DC-09)
             "motivo": conv.motivo,
         }
     flag = decidir(conv.escore, limiar=limiar)

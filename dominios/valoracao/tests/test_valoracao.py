@@ -69,7 +69,7 @@ def test_divergiu_escala_humana_luz_amarela():
     """Escores espalhados (amplitude 0,8 ≥ epsilon) → não convergiu → flag=None (humano)."""
     res = valorar_eixo(_PropositorEspalhado(), PROMPT_VULNERABILIDADE, "texto", limiar=0.7, n=5)
     assert res["convergiu"] is False
-    assert res["flag"] is None  # escala humana: o jurista decide na mão
+    assert res["flag"] is None  # indeterminação valorativa → escalada para estudo social (DC-09)
     assert res["escore"] is None
     assert "divergem" in res["motivo"]
 
@@ -80,7 +80,9 @@ def test_bits_divergem_tambem_cai_em_humano():
     class _BitsDivididos:
         def __init__(self) -> None:
             # escores apertados (amplitude 0,02 < epsilon) mas bits alternam
-            self._it = iter([(0.70, True), (0.69, False), (0.71, True), (0.68, False), (0.70, True)])
+            self._it = iter(
+                [(0.70, True), (0.69, False), (0.71, True), (0.68, False), (0.70, True)]
+            )
 
         def propor(self, prompt: str, texto: str) -> Proposta:  # noqa: ARG002
             e, b = next(self._it)

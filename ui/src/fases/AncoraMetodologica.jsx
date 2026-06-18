@@ -1,5 +1,6 @@
 /* Seletor da âncora metodológica — explícito: Alexy (ponderação) ou Müller
- * (concretização). A escolha do método é do jurista, não da máquina.
+ * (concretização). A âncora metodológica é doutrinária e explícita; a IA opera
+ * dentro dela, no resíduo valorativo.
  */
 const OPCOES = [
   { id: 'alexy', titulo: 'Alexy', nota: 'Ponderação de princípios (mandado de otimização)' },

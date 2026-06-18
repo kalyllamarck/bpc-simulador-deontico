@@ -43,13 +43,11 @@ AVISO_HONESTO = (
     "tensao orcamentaria; NAO e declaracao de inconstitucionalidade. O BPC e "
     "assistencia social (art. 203, V), custeado pelo orcamento, e nao seguro "
     "contributivo do art. 201; o elo com o equilibrio do art. 201 e argumentativo "
-    "(pressao sobre a seguridade), nao automatico. Quem decide e o jurista, nao a maquina."
+    "(pressao sobre a seguridade), nao automatico: e um indicador, nao um veredito."
 )
 
 # Rotulo obrigatorio quando o resultado usa uma hipotese do jurista (sem calibracao).
-ROTULO_HIPOTESE_JURISTA = (
-    "hipotese do jurista - nao calibrada em PNADc"
-)
+ROTULO_HIPOTESE_JURISTA = "hipotese do jurista - nao calibrada em PNADc"
 
 # Mensagem do guardrail quando a elasticidade nao foi calibrada e o jurista nao
 # informou hipotese: o motor NAO inventa numero.
@@ -87,8 +85,10 @@ def _gasto_base_reais(ancoras: dict) -> float:
 
 # ---- §2.1 - Formula base ----------------------------------------------------------
 
-def impacto_anual_reais(delta_beneficiarios: float, salario_minimo: float,
-                        meses: int = 12) -> float:
+
+def impacto_anual_reais(
+    delta_beneficiarios: float, salario_minimo: float, meses: int = 12
+) -> float:
     """Impacto anual em R$ = delta beneficiarios x 1 salario minimo x meses.
 
     Formula base do §2.1. Positivo = gasta MAIS; negativo = gasta MENOS.
@@ -98,8 +98,8 @@ def impacto_anual_reais(delta_beneficiarios: float, salario_minimo: float,
 
 # ---- §2.2 - Sensibilidade por parametro (GUARDRAIL de elasticidade) ---------------
 
-def _elasticidade_efetiva(parametro: str, ancoras: dict,
-                          elasticidade_hipotese: float | None):
+
+def _elasticidade_efetiva(parametro: str, ancoras: dict, elasticidade_hipotese: float | None):
     """Resolve a elasticidade a usar e o rotulo de calibracao.
 
     Tres caminhos:
@@ -129,8 +129,9 @@ def _elasticidade_efetiva(parametro: str, ancoras: dict,
     return None, baseline, None
 
 
-def estimar_delta(parametro: str, valor_novo: float, *, ancoras: dict,
-                  elasticidade_hipotese: float | None = None):
+def estimar_delta(
+    parametro: str, valor_novo: float, *, ancoras: dict, elasticidade_hipotese: float | None = None
+):
     """Estima o delta no nº de beneficiarios quando o jurista muda um parametro.
 
     Modelo de 1a ordem (linear):
@@ -157,6 +158,7 @@ def estimar_delta(parametro: str, valor_novo: float, *, ancoras: dict,
 
 
 # ---- §3.2 - Semaforo do art. 201 (3 cores) ----------------------------------------
+
 
 def semaforo_art201(gasto_novo: float, *, ancoras: dict) -> dict:
     """Acende o semaforo de PRESSAO orcamentaria (sinal 1 da pesquisa §3.2).
@@ -205,8 +207,10 @@ def semaforo_art201(gasto_novo: float, *, ancoras: dict) -> dict:
 
 # ---- O que a Tela 2 consome -------------------------------------------------------
 
-def simular(parametro: str, valor_novo: float, *, ancoras: dict,
-            elasticidade_hipotese: float | None = None) -> dict:
+
+def simular(
+    parametro: str, valor_novo: float, *, ancoras: dict, elasticidade_hipotese: float | None = None
+) -> dict:
     """Junta tudo: delta beneficiarios, delta R$/ano, gasto novo e semaforo do art. 201.
 
     E a funcao que a Tela 2 chama. Tudo e estimativa de ordem de grandeza.
@@ -220,7 +224,9 @@ def simular(parametro: str, valor_novo: float, *, ancoras: dict,
 
     # Valida o parametro cedo (levanta KeyError se desconhecido).
     delta_beneficiarios, rotulo_calibracao = estimar_delta(
-        parametro, valor_novo, ancoras=ancoras,
+        parametro,
+        valor_novo,
+        ancoras=ancoras,
         elasticidade_hipotese=elasticidade_hipotese,
     )
 

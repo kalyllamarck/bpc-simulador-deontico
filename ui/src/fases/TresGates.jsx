@@ -1,6 +1,7 @@
 /* Três portões deônticos — a justificação de 2ª ordem de MacCormick:
  * universalizabilidade, consistência e coerência. Quando o silogismo não fecha,
- * a decisão sobe a estes portões. O sistema percorre; quem decide é o jurista.
+ * a justificação sobe a estes portões. O sistema aplica a norma e estrutura a
+ * justificação; persistindo a indeterminação, o caso escala para o estudo social.
  */
 export default function TresGates({ gates }) {
   if (!gates) return null
@@ -20,7 +21,9 @@ export default function TresGates({ gates }) {
                 <p className={`text-sm font-semibold ${cor}`}>
                   {g.nome} — {g.passou ? 'satisfeito' : 'em aberto (juízo do jurista)'}
                 </p>
-                <p className="mt-0.5 text-sm leading-relaxed text-observa-petroleo/85">{g.explicacao}</p>
+                <p className="mt-0.5 text-sm leading-relaxed text-observa-petroleo/85">
+                  {g.explicacao}
+                </p>
               </div>
             </li>
           )

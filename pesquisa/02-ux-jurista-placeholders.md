@@ -174,8 +174,8 @@ fluxo de 3 camadas:
    prompt, texto, n=5)` devolve 5 `Proposta`.
 2. **CONVERGÊNCIA (determinística).** `avaliar_convergencia` com `epsilon=0,15` (amplitude máx-mín
    dos escores) e `limiar_bits=0,80` (≥4 de 5 bits iguais). Convergiu → **mediana** dos escores +
-   bit majoritário. Não convergiu → **indeterminação → escala humana** (o jurista decide na mão e
-   o sistema registra como "valoração humana").
+   bit majoritário. Não convergiu → **indeterminação valorativa → escalada para estudo social**
+   (DC-09: o caso sobe ao estudo social, externo ao sistema, e fica registrado como tal).
 3. **DEÔNTICO (função pura `decidir(escore, limiar)`).** Recebe só números, sem rede. É o único
    ponto que vira o grau em flag (ex.: limitação satisfeita? miserabilidade satisfeita?).
    Os limiares de cada eixo são **constantes auditáveis** (overlay em `regras/*.json`, mesma

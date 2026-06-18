@@ -22,10 +22,11 @@ export default function CabecalhoMarca() {
             </span>
           </div>
           <div className="text-sm font-medium leading-tight text-white">
-            Simulador deôntico do BPC — extensão didática do artigo
+            Simulador de aplicabilidade da norma do BPC — extensão didática do artigo
           </div>
           <div className="text-xs leading-tight text-white/80">
-            Benefício de Prestação Continuada · o sistema aplica a norma; quem decide é o jurista
+            Benefício de Prestação Continuada · o sistema aplica a norma por subsunção; o jurista
+            entra externamente, no estudo social, quando o estado fica indeterminado
           </div>
         </div>
       </div>

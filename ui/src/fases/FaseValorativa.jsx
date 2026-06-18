@@ -34,17 +34,24 @@ export default function FaseValorativa() {
   return (
     <div className="flex flex-col gap-6">
       <p className="text-sm leading-relaxed text-observa-petroleo/80">
-        Quando as regras rígidas não fecham — a renda supera o ¼, mas o §11 admite outros elementos de
-        miserabilidade —, abre-se o resíduo valorativo. Aqui o jurista escolhe, de forma explícita, o método
-        de valoração. O sistema apenas estrutura o argumento; a decisão continua sendo humana.
+        Quando as regras rígidas não fecham — a renda supera o ¼, mas o §11 admite outros elementos
+        de miserabilidade —, abre-se o resíduo valorativo. Aqui o jurista escolhe, de forma
+        explícita, o método de valoração. O sistema apenas estrutura o argumento; a decisão continua
+        sendo humana.
       </p>
 
       <div>
-        <p className="mb-2 text-sm font-semibold text-observa-petroleo">Âncora metodológica (escolha do jurista)</p>
+        <p className="mb-2 text-sm font-semibold text-observa-petroleo">
+          Âncora metodológica (escolha do jurista)
+        </p>
         <AncoraMetodologica ancora={ancora} onEscolher={escolher} />
       </div>
 
-      {ancora === 'alexy' ? <ExplicacaoAlexy resultado={resultado} /> : <ExplicacaoMuller resultado={resultado} />}
+      {ancora === 'alexy' ? (
+        <ExplicacaoAlexy resultado={resultado} />
+      ) : (
+        <ExplicacaoMuller resultado={resultado} />
+      )}
 
       <div>
         <button
@@ -52,15 +59,19 @@ export default function FaseValorativa() {
           disabled={carregando}
           className="rounded-marca bg-observa-petroleo px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-observa-petroleo/90 disabled:opacity-50"
         >
-          {carregando ? 'Estruturando o argumento…' : `Estruturar pela âncora ${ancora === 'alexy' ? 'de Alexy' : 'de Müller'}`}
+          {carregando
+            ? 'Estruturando o argumento…'
+            : `Estruturar pela âncora ${ancora === 'alexy' ? 'de Alexy' : 'de Müller'}`}
         </button>
       </div>
 
       {resultado && (
         <>
           <p className="rounded-marca border-l-4 border-observa-menta bg-observa-menta/10 p-3 text-xs leading-relaxed text-observa-petroleo/85">
-            O sistema estrutura o raciocínio; ele não decide (a saída traz <code>decide: falso</code>). A
-            conclusão sobre a miserabilidade cabe ao jurista, no estudo social.
+            A IA interpreta e propõe o grau de miserabilidade — o resíduo valorativo do art. 20, §11
+            (a saída traz <code>decide: falso</code>: este módulo não fecha o gate sozinho). A linha
+            determinística decide; persistindo a indeterminação valorativa, o caso escala para o
+            estudo social.
           </p>
           <OrigemDado origem={resultado._origem} />
         </>
