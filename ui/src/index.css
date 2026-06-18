@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tokens da marca ObservaSocial (espelham ui/marca/CORES.md). Mantidos como
+   variáveis para referência; as cores também vivem no tailwind.config.js. */
+:root {
+  --cor-primaria: #3d4f4f; /* verde-petróleo */
+  --cor-secundaria: #43c295; /* verde-menta */
+  --cor-texto: #3d4f4f;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: var(--cor-texto);
+  background: #f4f6f7;
+  -webkit-font-smoothing: antialiased;
+}

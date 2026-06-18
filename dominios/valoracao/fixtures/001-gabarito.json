@@ -1,0 +1,16 @@
+{
+  "simulada": true,
+  "resultado_real": "CONCEDIDO",
+  "objetivos": {
+    "idade": 72,
+    "deficiente": false,
+    "impedimento_meses": 0,
+    "renda_total": 180.0,
+    "n_familia": 1,
+    "acumula_beneficio": false,
+    "salario_minimo": 1412.0
+  },
+  "escore_miserabilidade": null,
+  "regra_chave": "R3",
+  "nota": "Idosa 72 anos, renda per capita R$180 (<= ¼ SM=R$353). R3 satisfeito. Concessão objetiva sem necessidade de escore de miserabilidade."
+}

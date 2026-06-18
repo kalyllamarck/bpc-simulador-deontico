@@ -1,0 +1,16 @@
+{
+  "simulada": true,
+  "resultado_real": "CONCEDIDO",
+  "objetivos": {
+    "idade": 68,
+    "deficiente": false,
+    "impedimento_meses": 0,
+    "renda_total": 1000.0,
+    "n_familia": 2,
+    "acumula_beneficio": false,
+    "salario_minimo": 1412.0
+  },
+  "escore_miserabilidade": 0.85,
+  "regra_chave": "R5>R4",
+  "nota": "CASO-CHAVE DA TESE. Idoso 68 anos, renda per capita R$500 (>R$353, R4 bloquearia). Mas escore_miserabilidade=0.85 (>= limiar 0.5): R5 derrota R4. Zerando o escore => NEGADO (prova que é R5 que salva)."
+}

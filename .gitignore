@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+node_modules/
+dist/
+build/
+.DS_Store
+# marca/identidade copiada do Drive (não versionar binários grandes até confirmar)
+ui/marca/*.psd
+
+# Deploy/ops fica FORA do repo público (IP da VPS, usuário SSH, caminhos do servidor).
+deploy/

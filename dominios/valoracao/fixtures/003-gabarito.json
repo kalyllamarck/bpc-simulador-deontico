@@ -1,0 +1,16 @@
+{
+  "simulada": true,
+  "resultado_real": "NEGADO",
+  "objetivos": {
+    "idade": 35,
+    "deficiente": true,
+    "impedimento_meses": 8,
+    "renda_total": 360.0,
+    "n_familia": 3,
+    "acumula_beneficio": false,
+    "salario_minimo": 1412.0
+  },
+  "escore_miserabilidade": null,
+  "regra_chave": "R2",
+  "nota": "Deficiente 35 anos, impedimento 8 meses (<24). R2 falha: sem impedimento de longo prazo. Negado mesmo com renda per capita baixa."
+}

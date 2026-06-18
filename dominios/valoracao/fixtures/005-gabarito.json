@@ -1,0 +1,16 @@
+{
+  "simulada": true,
+  "resultado_real": "NEGADO",
+  "objetivos": {
+    "idade": 66,
+    "deficiente": false,
+    "impedimento_meses": 0,
+    "renda_total": 1000.0,
+    "n_familia": 2,
+    "acumula_beneficio": false,
+    "salario_minimo": 1412.0
+  },
+  "escore_miserabilidade": 0.20,
+  "regra_chave": "R4",
+  "nota": "Idoso 66 anos, renda per capita R$500 (>R$353). Escore_miserabilidade=0.20 (<0.5): R5 nao derrota R4. Negado pelo critério econômico."
+}

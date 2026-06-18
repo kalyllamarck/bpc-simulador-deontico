@@ -1,0 +1,16 @@
+{
+  "simulada": true,
+  "resultado_real": "CONCEDIDO",
+  "objetivos": {
+    "idade": 40,
+    "deficiente": true,
+    "impedimento_meses": 30,
+    "renda_total": 240.0,
+    "n_familia": 2,
+    "acumula_beneficio": false,
+    "salario_minimo": 1412.0
+  },
+  "escore_miserabilidade": null,
+  "regra_chave": "R3",
+  "nota": "Deficiente 40 anos, impedimento 30 meses (>=24, R2 OK), renda per capita R$120 (<= ¼ SM). R3 satisfeito."
+}

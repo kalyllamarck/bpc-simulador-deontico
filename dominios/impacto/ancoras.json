@@ -1,0 +1,99 @@
+{
+  "_doc": "Constantes EDITAVEIS da calculadora de impacto (Tela 2). O jurista/Kalyl mexe AQUI, nao no codigo. Toda constante carrega 'fonte' (publicacao citavel) e 'status' (CONFIRMADO ou A_CONFIRMAR). Elasticidades e take-up permanecem null/A_CONFIRMAR: nunca preenchidas por estimativa da IA, so por calculo sobre a PNADc. Ver SLOT-DADOS-BEPS.md.",
+  "_fonte_documento": "pesquisa/03-simulador-impacto-art201.md; relatorio de auditoria cientifica (conselho 3 Opus).",
+
+  "especies": {
+    "_comentario": "Codigos das especies de BPC no INSS/MPS (BEPS). Confirmados.",
+    "87": "BPC-PcD (Amparo Social ao Portador de Deficiencia)",
+    "88": "BPC-Idoso (Amparo Social ao Idoso)",
+    "fonte": "BEPS (INSS/MPS), tabela de especies de beneficio",
+    "status": "CONFIRMADO"
+  },
+
+  "gasto_bpc_2024_bilhoes": {
+    "valor": 113.421,
+    "unidade": "R$ bilhoes",
+    "fonte": "Tesouro Nacional, RTN dez/2024, serie_historica_dez24.xlsx",
+    "status": "CONFIRMADO",
+    "_comentario": "Gasto total do BPC em 2024 (R$ 113,421 bi). Linha de base do semaforo. Substitui a ancora anterior de R$ 102,1 bi, que estava SUBESTIMADA."
+  },
+
+  "estoque_total_beneficios_emitidos_2025": {
+    "valor": 7645372,
+    "unidade": "beneficios emitidos",
+    "fonte": "BEPS abr/2026, Quadro 2, linha 2025 (INSS/MPS)",
+    "status": "CONFIRMADO",
+    "_comentario": "Estoque total de beneficios do BPC emitidos em 2025."
+  },
+
+  "concessoes_assistenciais_2023": {
+    "valor": 804138,
+    "unidade": "concessoes",
+    "fonte": "AEPS 2023",
+    "status": "CONFIRMADO",
+    "_comentario": "Concessoes assistenciais (BPC) no ano de 2023, conforme Anuario Estatistico da Previdencia Social."
+  },
+
+  "beneficio_unitario_sm": {
+    "_comentario": "Valor do salario minimo por ano. O BPC = 1 SM, sem 13o, sem dependente. Valor unitario anual = SM x meses.",
+    "2024": 1412.00,
+    "2025": 1518.00,
+    "2026": 1622.00,
+    "fonte": "Portaria Interministerial MPS/MF",
+    "status": "CONFIRMADO"
+  },
+
+  "meses": {
+    "valor": 12,
+    "status": "CONFIRMADO",
+    "_comentario": "Meses pagos por ano. BPC nao tem 13o."
+  },
+
+  "semaforo": {
+    "limiar_amarelo_pct": 20,
+    "limiar_vermelho_pct": 50,
+    "status": "CONFIRMADO",
+    "fonte": "Escolha politica editavel do Kalyl (nao e verdade absoluta; o art. 201 nao fixa numero de 'sustentavel').",
+    "_comentario": "Acrescimo % sobre o gasto atual que acende cada cor. AMARELO a partir de +20%, VERMELHO a partir de +50%. Limiares editaveis."
+  },
+
+  "taxa_adesao_take_up_bpc_idoso": {
+    "valor": null,
+    "status": "A_CONFIRMAR",
+    "fonte": null,
+    "_nota_metodologica": "NUNCA preencher por estimativa da IA. Calcular: estoque_BEPS_Q2 (especie 88) / elegiveis_PNADc2024 (idosos 65+ com RDPC abaixo do limiar legal). Referencias: Medeiros, TD 1416/IPEA (2009); MDS/SAGI (2009)."
+  },
+
+  "taxa_adesao_take_up_bpc_pcd": {
+    "valor": null,
+    "status": "A_CONFIRMAR",
+    "fonte": null,
+    "_nota_metodologica": "NUNCA preencher por estimativa da IA. Calcular: estoque_BEPS_Q2 (especie 87) / elegiveis_PNADc2024 (PcD com RDPC abaixo do limiar legal). Referencias: Medeiros, TD 1416/IPEA (2009); MDS/SAGI (2009) estimou take-up de ~57% para PcD."
+  },
+
+  "elasticidades": {
+    "_comentario": "Variacao no ESTOQUE de beneficiarios por mudanca de parametro (modelo de 1a ordem, ordem de grandeza, NAO previsao). DEVEM vir de calculo sobre a PNADc, NUNCA de chute da IA. Enquanto null, o motor devolve estado NAO_CALIBRADO (nao inventa numero); o jurista pode informar uma hipotese explicita, que sai ROTULADA como nao calibrada. Ver SLOT-DADOS-BEPS.md.",
+
+    "elasticidade_limiar_renda_1_4_para_1_2_SM": {
+      "valor": null,
+      "_baseline": 0.25,
+      "status": "A_CONFIRMAR",
+      "fonte": null,
+      "_nota_metodologica": "Calcular na PNADc 2024: contar pessoas com renda domiciliar per capita (RDPC) entre 0,25 e 0,50 SM, entre idosos 65+ e PcD. Variavel = limiar de renda per capita em fracoes de SM (baseline legal = 0,25 = 1/4 SM)."
+    },
+    "elasticidade_criterio_etario": {
+      "valor": null,
+      "_baseline": 65,
+      "status": "A_CONFIRMAR",
+      "fonte": null,
+      "_nota_metodologica": "Calcular na PNADc 2024. Referencia: Jaccoud, TD 2301/IPEA (2017) estimou reducao de ~67% no publico se a idade minima fosse a 70. Variavel = idade minima do idoso (baseline legal = 65)."
+    },
+    "elasticidade_criterio_deficiencia": {
+      "valor": null,
+      "_baseline": 24,
+      "status": "A_CONFIRMAR",
+      "fonte": null,
+      "_nota_metodologica": "Inconclusivo na literatura fora de dados administrativos do INSS (avaliacao biopsicossocial, nao renda). Variavel = prazo de impedimento de longo prazo em meses (baseline legal = 24)."
+    }
+  }
+}

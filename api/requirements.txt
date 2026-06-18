@@ -1,0 +1,6 @@
+# Motor (API) do simulador deôntico do BPC — ObservaSocial.
+# Rodar a partir da raiz do simulador (simulador-deontico/):
+#   pip install -r api/requirements.txt
+#   uvicorn api.main:app --reload
+fastapi>=0.111
+uvicorn[standard]>=0.30

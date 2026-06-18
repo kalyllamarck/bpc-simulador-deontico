@@ -1,0 +1,15 @@
+[project]
+name = "bpc-deontico"
+version = "0.1.0"
+description = "Simulador da norma do BPC em código deôntico auditável (DDL + IA só no resíduo valorativo)."
+requires-python = ">=3.12"
+
+# Repo autossuficiente: a camada híbrida (oficina/hibrido.py) é cópia versionada do harness
+# Oficina (a IA INTERPRETA, a camada deôntica DECIDE). O gate é determinístico e sem rede.
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["dominios"]
+addopts = "-m 'not llm_real'"
+markers = [
+    "llm_real: chama LLM de verdade (custo+rede); excluído do gate, roda no nightly",
+]
