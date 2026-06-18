@@ -18,7 +18,9 @@ export default function SilogismoDedutivo({ silogismo }) {
           </li>
         ))}
       </ol>
-      <p className={`mt-3 text-sm font-semibold ${fecha ? 'text-sinal-verde' : 'text-sinal-amarelo'}`}>
+      <p
+        className={`mt-3 text-sm font-semibold ${fecha ? 'text-sinal-verde' : 'text-sinal-amarelo'}`}
+      >
         {fecha
           ? 'O silogismo fecha: a conclusão decorre dedutivamente das premissas.'
           : 'O silogismo não fecha: o caso exige a justificação de 2ª ordem (abaixo).'}

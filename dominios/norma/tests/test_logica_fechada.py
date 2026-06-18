@@ -51,13 +51,14 @@ def _requerente(idade, deficiente, impedimento, acumula, renda_pc, escore) -> Re
 
 # ---- 1. Totalidade: nenhuma combinação fica sem estado, nenhuma trava -------------
 
+
 def test_logica_fechada_cobre_todas_as_combinacoes():
-    idades = (60, 70)                 # não idoso / idoso
+    idades = (60, 70)  # não idoso / idoso
     deficiencias = (False, True)
-    impedimentos = (0, 30)            # curto / longo
+    impedimentos = (0, 30)  # curto / longo
     acumulacoes = (False, True)
-    rendas_pc = (10_000, 40_000)      # abaixo / acima do ¼ SM (35 300)
-    escores = (None, 0.2, 0.85)       # ausente / baixo / alto
+    rendas_pc = (10_000, 40_000)  # abaixo / acima do ¼ SM (35 300)
+    escores = (None, 0.2, 0.85)  # ausente / baixo / alto
 
     combinacoes = list(product(idades, deficiencias, impedimentos, acumulacoes, rendas_pc, escores))
     assert len(combinacoes) == 96
@@ -74,6 +75,7 @@ def test_logica_fechada_cobre_todas_as_combinacoes():
 
 
 # ---- 2. O terceiro estado: renda acima do teto sem grau → valoração humana --------
+
 
 def test_indeterminado_so_quando_acima_do_teto_e_sem_grau():
     # público ok, impedimento ok, sem acúmulo, renda acima do teto, grau ausente.
@@ -95,6 +97,7 @@ def test_regra_estrita_nega_sem_passar_pela_valoracao():
 
 # ---- 3. Entrada válida: composição do art. 20, §1º; simular nunca falha -----------
 
+
 def test_validar_composicao_recusa_papel_fora_da_lei():
     with pytest.raises(ComposicaoFamiliarInvalida):
         validar_composicao([MembroFamilia(renda_centavos=0, papel="vizinho")])
@@ -106,20 +109,26 @@ def test_validar_composicao_recusa_grupo_sem_requerente():
 
 
 def test_validar_composicao_aceita_grupo_legal():
-    validar_composicao([
-        MembroFamilia(renda_centavos=50_000, papel="requerente"),
-        MembroFamilia(renda_centavos=0, papel="cônjuge ou companheiro"),
-        MembroFamilia(renda_centavos=0, papel="filho ou enteado solteiro"),
-    ])  # não lança
+    validar_composicao(
+        [
+            MembroFamilia(renda_centavos=50_000, papel="requerente"),
+            MembroFamilia(renda_centavos=0, papel="cônjuge ou companheiro"),
+            MembroFamilia(renda_centavos=0, papel="filho ou enteado solteiro"),
+        ]
+    )  # não lança
 
 
 def test_simular_nao_falha_com_composicao_invalida():
     x = Requerente(
         familia=[MembroFamilia(renda_centavos=0, papel="vizinho")],
-        idade=70, deficiente=False, impedimento_meses=0, acumula_beneficio=False,
-        salario_minimo_centavos=SM_CENTAVOS, escore_miserabilidade=None,
+        idade=70,
+        deficiente=False,
+        impedimento_meses=0,
+        acumula_beneficio=False,
+        salario_minimo_centavos=SM_CENTAVOS,
+        escore_miserabilidade=None,
     )
-    resultado = simular(x)               # não lança
+    resultado = simular(x)  # não lança
     assert resultado["conclusao"] == DADOS_INVALIDOS
     assert "art. 20, §1º" in resultado["motivo"]
 

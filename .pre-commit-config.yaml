@@ -1,0 +1,33 @@
+# Gate LEVE de higiene de CÓDIGO — não confundir com o gate de CONTEÚDO da oficina
+# (que decide passa/falha da norma). Aqui só formatamos e apontamos erros mecânicos.
+#
+# Instalar uma vez (na raiz do simulador):
+#     pip install pre-commit
+#     pre-commit install
+# Rodar à mão em tudo:
+#     pre-commit run --all-files
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff — lint Python
+        entry: ruff check --fix
+        language: system
+        types: [python]
+      - id: ruff-format
+        name: ruff — formata Python
+        entry: ruff format
+        language: system
+        types: [python]
+      - id: eslint-front
+        name: ESLint — front (ui/)
+        entry: bash -c 'cd ui && npx eslint .'
+        language: system
+        files: ^ui/.*\.(js|jsx)$
+        pass_filenames: false
+      - id: prettier-front
+        name: Prettier — front (ui/)
+        entry: bash -c 'cd ui && npx prettier --check .'
+        language: system
+        files: ^ui/.*\.(js|jsx|json|css|html)$
+        pass_filenames: false

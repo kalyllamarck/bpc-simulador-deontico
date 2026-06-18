@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Gate LEVE de higiene de CÓDIGO (não é o gate de CONTEÚDO da oficina, que decide a norma).
+# Roda sem framework: basta `git config core.hooksPath .githooks` (ver README).
+# Espelha o .pre-commit-config.yaml para quem usa a ferramenta `pre-commit`.
+set -euo pipefail
+raiz="$(git rev-parse --show-toplevel)"
+cd "$raiz"
+
+# Só roda cada bloco se houver arquivo daquele tipo no commit (staged).
+staged() { git diff --cached --name-only --diff-filter=ACM; }
+
+if staged | grep -qE '\.py$'; then
+  echo "• ruff (Python)…"
+  ruff check .
+  ruff format --check .
+fi
+
+if staged | grep -qE '^ui/.*\.(js|jsx|json|css|html)$'; then
+  echo "• ESLint + Prettier (front)…"
+  ( cd ui && npx eslint . && npx prettier --check . )
+fi
+
+echo "✓ higiene de código ok"

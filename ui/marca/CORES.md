@@ -4,12 +4,12 @@ Cores extraídas dos logos oficiais via Pillow (quantize 8 cores).
 
 ## Cores oficiais
 
-| Hex       | Papel               | Frequência |
-|-----------|---------------------|------------|
-| `#3d4f4f` | Primária / Texto    | ~96% (fundo e símbolo) |
-| `#43c295` | Acento / Ícone      | ~1% (detalhe gráfico do logo) |
-| `#ffffff` | Sobre fundo escuro  | branco padrão |
-| `#d2eae3` | Verde pálido apoio  | residual |
+| Hex       | Papel              | Frequência                    |
+| --------- | ------------------ | ----------------------------- |
+| `#3d4f4f` | Primária / Texto   | ~96% (fundo e símbolo)        |
+| `#43c295` | Acento / Ícone     | ~1% (detalhe gráfico do logo) |
+| `#ffffff` | Sobre fundo escuro | branco padrão                 |
+| `#d2eae3` | Verde pálido apoio | residual                      |
 
 ### Papéis no tokens.css
 
@@ -20,8 +20,8 @@ Cores extraídas dos logos oficiais via Pillow (quantize 8 cores).
 
 ## Fontes dos arquivos
 
-| Arquivo               | Nome no Drive                     | File ID                            | URL |
-|-----------------------|-----------------------------------|------------------------------------|-----|
+| Arquivo               | Nome no Drive                     | File ID                             | URL                                                                    |
+| --------------------- | --------------------------------- | ----------------------------------- | ---------------------------------------------------------------------- |
 | logo-fundo-verde.jpg  | Logo fundo verde (ObservaSocial)  | `19jBi7IoMqfmVWyjb1ibOUpEt169amJjz` | https://drive.google.com/file/d/19jBi7IoMqfmVWyjb1ibOUpEt169amJjz/view |
 | logo-fundo-branco.jpg | Logo fundo branco (ObservaSocial) | `1IIJTJ1meXT7FEal0Xj8aAoVyI6eiqeJ1` | https://drive.google.com/file/d/1IIJTJ1meXT7FEal0Xj8aAoVyI6eiqeJ1/view |
 | logo-versoes.pdf      | Logo versões (ObservaSocial)      | `18ntu892FdJe5J0wxpMqulO2erkCT6Hbc` | https://drive.google.com/file/d/18ntu892FdJe5J0wxpMqulO2erkCT6Hbc/view |

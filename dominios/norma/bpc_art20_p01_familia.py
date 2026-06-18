@@ -69,9 +69,7 @@ def validar_composicao(membros: list[MembroFamilia]) -> None:
             "grupo familiar vazio: a norma pressupõe ao menos o requerente (art. 20, §1º)"
         )
     if not any(membro.papel == "requerente" for membro in membros):
-        raise ComposicaoFamiliarInvalida(
-            "grupo familiar sem o requerente (art. 20, §1º)"
-        )
+        raise ComposicaoFamiliarInvalida("grupo familiar sem o requerente (art. 20, §1º)")
     fora_da_lista = sorted({m.papel for m in membros if m.papel not in PAPEIS_GRUPO_FAMILIAR})
     if fora_da_lista:
         raise ComposicaoFamiliarInvalida(

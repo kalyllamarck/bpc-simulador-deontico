@@ -36,13 +36,25 @@ def _req(**kw) -> Requerente:
 
 # Entradas representativas, uma por caminho terminal do motor.
 CASOS = {
-    "vedacao_R6": _req(acumula_beneficio=True),                                    # F (R6)
-    "fora_publico_R1": _req(idade=40, deficiente=False),                           # F (R1)
+    "vedacao_R6": _req(acumula_beneficio=True),  # F (R6)
+    "fora_publico_R1": _req(idade=40, deficiente=False),  # F (R1)
     "deficiente_sem_impedimento_R2": _req(idade=40, deficiente=True, impedimento_meses=6),  # F (R2)
-    "dentro_teto_R3": _req(idade=70),                                              # O (R3)
-    "miseravel_R5": _req(idade=70, familia=[MembroFamilia(renda_centavos=SM, papel="requerente")], escore_miserabilidade=0.9),  # O (R5)
-    "nao_miseravel_R4": _req(idade=70, familia=[MembroFamilia(renda_centavos=SM, papel="requerente")], escore_miserabilidade=0.1),  # F (R4)
-    "indeterminado": _req(idade=70, familia=[MembroFamilia(renda_centavos=SM, papel="requerente")], escore_miserabilidade=None),  # INDETERMINADO
+    "dentro_teto_R3": _req(idade=70),  # O (R3)
+    "miseravel_R5": _req(
+        idade=70,
+        familia=[MembroFamilia(renda_centavos=SM, papel="requerente")],
+        escore_miserabilidade=0.9,
+    ),  # O (R5)
+    "nao_miseravel_R4": _req(
+        idade=70,
+        familia=[MembroFamilia(renda_centavos=SM, papel="requerente")],
+        escore_miserabilidade=0.1,
+    ),  # F (R4)
+    "indeterminado": _req(
+        idade=70,
+        familia=[MembroFamilia(renda_centavos=SM, papel="requerente")],
+        escore_miserabilidade=None,
+    ),  # INDETERMINADO
 }
 
 

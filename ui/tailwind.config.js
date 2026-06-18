@@ -10,8 +10,8 @@ export default {
     extend: {
       colors: {
         'observa-petroleo': '#3d4f4f', // primária — verde-petróleo (estrutura da marca)
-        'observa-menta': '#43c295',    // acento — verde-menta (ícone do logo)
-        'observa-palido': '#d2eae3',   // verde pálido de apoio
+        'observa-menta': '#43c295', // acento — verde-menta (ícone do logo)
+        'observa-palido': '#d2eae3', // verde pálido de apoio
         'observa-fundo': '#f4f6f7',
         'observa-borda': '#ccd1d9',
         // Sinais (semáforo deôntico / art. 201) — linguagem da norma, não "status"

@@ -61,6 +61,7 @@ def req(**kw) -> Requerente:
 
 # ---- art. 20, §3º — limite e renda per capita em centavos ------------------------
 
+
 def test_limite_renda_eh_um_quarto_do_sm_em_centavos():
     assert limite_renda_centavos(SM_CENTAVOS) == 35_300  # R$ 353,00
 
@@ -83,6 +84,7 @@ def test_renda_per_capita_grupo_vazio_e_erro():
 
 # ---- art. 20, caput — público (idoso OU deficiente) ------------------------------
 
+
 def test_idoso_com_65_ou_mais():
     assert idoso(65)
     assert not idoso(64)
@@ -95,6 +97,7 @@ def test_r1_nao_idoso_e_nao_deficiente_proibido():
 
 
 # ---- art. 20, §2º + §10 — impedimento de longo prazo -----------------------------
+
 
 def test_impedimento_longo_a_partir_de_24_meses():
     assert impedimento_longo(24)
@@ -120,12 +123,14 @@ def test_r2_idoso_dispensa_impedimento():
 
 # ---- caso feliz: idoso pobre sem acúmulo → obrigatório conceder ------------------
 
+
 def test_idoso_pobre_sem_acumulo_obrigatorio_conceder():
     x = req(idade=70)
     assert concluir(x) == "O_CONCEDER"
 
 
 # ---- art. 20, §3º — R3: renda dentro do teto satisfaz econômico ------------------
+
 
 def test_r3_renda_dentro_do_teto_obrigatorio():
     x = req(idade=70, familia=[MembroFamilia(renda_centavos=30_000)])  # R$ 300 <= R$ 353
@@ -141,30 +146,29 @@ def test_r3_renda_exatamente_no_limite_satisfaz():
 
 # ---- renda acima do ¼ SM: grau ausente → INDETERMINADO; grau baixo → R4 (proibido) -
 
+
 def test_renda_acima_do_teto_sem_grau_indeterminado_valoracao_humana():
     # renda per capita R$ 500 > R$ 353; sem grau → não nega no escuro: exige estudo social.
-    x = req(idade=70, familia=[MembroFamilia(renda_centavos=50_000)],
-            escore_miserabilidade=None)
-    assert not criterio_economico(x)                 # não satisfeito afirmativamente
-    assert concluir(x) == INDETERMINADO              # valoração humana, não negação
+    x = req(idade=70, familia=[MembroFamilia(renda_centavos=50_000)], escore_miserabilidade=None)
+    assert not criterio_economico(x)  # não satisfeito afirmativamente
+    assert concluir(x) == INDETERMINADO  # valoração humana, não negação
 
 
 def test_r4_renda_acima_do_teto_escore_baixo_proibido():
-    x = req(idade=70, familia=[MembroFamilia(renda_centavos=50_000)],
-            escore_miserabilidade=0.2)
+    x = req(idade=70, familia=[MembroFamilia(renda_centavos=50_000)], escore_miserabilidade=0.2)
     assert not miseravel(x.escore_miserabilidade)
     assert concluir(x) == "F_CONCEDER"
 
 
 # ---- R5 DERROTA R4: o teste-chave da tese ----------------------------------------
 
+
 def test_r5_derrota_r4_renda_acima_do_teto_mas_miseravel_obrigatorio_conceder():
     # MESMA renda do teste anterior (R$ 500 > R$ 353), mas grau alto → miserável.
-    x = req(idade=70, familia=[MembroFamilia(renda_centavos=50_000)],
-            escore_miserabilidade=0.9)
+    x = req(idade=70, familia=[MembroFamilia(renda_centavos=50_000)], escore_miserabilidade=0.9)
     assert miseravel(x.escore_miserabilidade)
-    assert criterio_economico(x)             # R5 derrota R4
-    assert concluir(x) == "O_CONCEDER"       # a exceção vence a regra-geral
+    assert criterio_economico(x)  # R5 derrota R4
+    assert concluir(x) == "O_CONCEDER"  # a exceção vence a regra-geral
 
 
 def test_r5_escore_none_nao_derrota():
@@ -179,6 +183,7 @@ def test_r5_respeita_limiar_customizado():
 
 # ---- art. 20, §4º — R6: vedação de acumulação (testada primeiro) -----------------
 
+
 def test_r6_predicado_da_vedacao():
     assert acumula_beneficio_vedado(True)
     assert not acumula_beneficio_vedado(False)
@@ -191,12 +196,17 @@ def test_r6_acumulo_proibido_mesmo_sendo_idoso_pobre():
 
 def test_r6_tem_prioridade_sobre_tudo():
     # idoso, pobre, miserável — mas acumula → ainda proibido.
-    x = req(idade=70, familia=[MembroFamilia(renda_centavos=50_000)],
-            acumula_beneficio=True, escore_miserabilidade=0.9)
+    x = req(
+        idade=70,
+        familia=[MembroFamilia(renda_centavos=50_000)],
+        acumula_beneficio=True,
+        escore_miserabilidade=0.9,
+    )
     assert concluir(x) == "F_CONCEDER"
 
 
 # ---- grupo familiar muda a elegibilidade -----------------------------------------
+
 
 def test_inclusao_de_membro_muda_per_capita_e_elegibilidade():
     """Incluir um membro sem renda baixa o per capita e vira a conclusão.
@@ -221,9 +231,9 @@ def test_inclusao_de_membro_muda_per_capita_e_elegibilidade():
 
 # ---- trilha de raciocínio determinístico (auditável) -----------------------------
 
+
 def test_rastro_marca_r5_quando_derrota():
-    x = req(idade=70, familia=[MembroFamilia(renda_centavos=50_000)],
-            escore_miserabilidade=0.9)
+    x = req(idade=70, familia=[MembroFamilia(renda_centavos=50_000)], escore_miserabilidade=0.9)
     trilha = rastro(x)
     assert any("R5" in linha for linha in trilha)
     assert trilha[-1].endswith("O_CONCEDER")

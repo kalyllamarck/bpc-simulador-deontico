@@ -40,8 +40,10 @@ def _montar_familia(renda_total_reais: float, n_familia: int) -> list[MembroFami
     """
     total_centavos = _reais_para_centavos(renda_total_reais)
     membros = [MembroFamilia(renda_centavos=total_centavos, papel="requerente")]
-    membros += [MembroFamilia(renda_centavos=0, papel="filho ou enteado solteiro")
-                for _ in range(n_familia - 1)]
+    membros += [
+        MembroFamilia(renda_centavos=0, papel="filho ou enteado solteiro")
+        for _ in range(n_familia - 1)
+    ]
     return membros
 
 
@@ -67,6 +69,7 @@ def _decidir_legivel(requerente: Requerente) -> str:
 # ---------------------------------------------------------------------------
 # Parâmetros dos 5 casos
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.parametrize("gabarito_path", GABARITOS, ids=[p.stem for p in GABARITOS])
 def test_acerto_individual(gabarito_path: Path) -> None:
@@ -107,6 +110,7 @@ def test_cinco_de_cinco() -> None:
 # ---------------------------------------------------------------------------
 # Teste da tese: R5 salva o caso 004 — zerando o escore, vira NEGADO
 # ---------------------------------------------------------------------------
+
 
 def test_tese_r5_derrota_r4() -> None:
     """Prova que é R5 (miserabilidade) que concede o caso 004.

@@ -14,8 +14,8 @@ Duas telas:
   dispositivos.
 - **Impacto e art. 201** — controles para os parâmetros (limiar de renda, idade,
   deficiência), a variação de beneficiários e de gasto, e o **semáforo do art. 201**
-  (verde/amarelo/vermelho), com o aviso honesto de que o sinal *expõe a tensão, não
-  declara inconstitucionalidade*.
+  (verde/amarelo/vermelho), com o aviso honesto de que o sinal _expõe a tensão, não
+  declara inconstitucionalidade_.
 
 ## Como rodar as duas pontas
 

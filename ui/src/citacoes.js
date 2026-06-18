@@ -56,22 +56,19 @@ export const AUTORES = {
   alexy: {
     nome: 'Robert Alexy',
     obra: 'Teoria dos direitos fundamentais',
-    abnt:
-      'ALEXY, Robert. Teoria dos direitos fundamentais. Tradução de Virgílio Afonso da Silva. 2. ed. São Paulo: Malheiros, 2011.',
+    abnt: 'ALEXY, Robert. Teoria dos direitos fundamentais. Tradução de Virgílio Afonso da Silva. 2. ed. São Paulo: Malheiros, 2011.',
     print: '[A CONFIRMAR]',
   },
   muller: {
     nome: 'Friedrich Müller',
     obra: 'Métodos de trabalho do direito constitucional',
-    abnt:
-      'MÜLLER, Friedrich. Métodos de trabalho do direito constitucional. Tradução de Peter Naumann. 3. ed. Rio de Janeiro: Renovar, 2005.',
+    abnt: 'MÜLLER, Friedrich. Métodos de trabalho do direito constitucional. Tradução de Peter Naumann. 3. ed. Rio de Janeiro: Renovar, 2005.',
     print: '[A CONFIRMAR]',
   },
   maccormick: {
     nome: 'Neil MacCormick',
     obra: 'Argumentação jurídica e teoria do direito',
-    abnt:
-      'MACCORMICK, Neil. Argumentação jurídica e teoria do direito. Tradução de Waldéa Barcellos. São Paulo: Martins Fontes, 2006.',
+    abnt: 'MACCORMICK, Neil. Argumentação jurídica e teoria do direito. Tradução de Waldéa Barcellos. São Paulo: Martins Fontes, 2006.',
     print: '[A CONFIRMAR]',
   },
 }

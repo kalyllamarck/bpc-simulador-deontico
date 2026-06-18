@@ -7,8 +7,16 @@ import { functor, traduzir } from '../lexico'
 
 const CLASSE_SINAL = {
   verde: { ponto: 'bg-sinal-verde', texto: 'text-sinal-verde', borda: 'border-sinal-verde' },
-  amarelo: { ponto: 'bg-sinal-amarelo', texto: 'text-sinal-amarelo', borda: 'border-sinal-amarelo' },
-  vermelho: { ponto: 'bg-sinal-vermelho', texto: 'text-sinal-vermelho', borda: 'border-sinal-vermelho' },
+  amarelo: {
+    ponto: 'bg-sinal-amarelo',
+    texto: 'text-sinal-amarelo',
+    borda: 'border-sinal-amarelo',
+  },
+  vermelho: {
+    ponto: 'bg-sinal-vermelho',
+    texto: 'text-sinal-vermelho',
+    borda: 'border-sinal-vermelho',
+  },
 }
 
 function reaisDeCentavos(centavos) {

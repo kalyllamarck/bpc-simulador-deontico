@@ -48,8 +48,8 @@ export default function Fonte({ titulo, abnt, print, onFechar }) {
           ) : (
             <p className="text-xs italic text-observa-petroleo/70">
               Comprovação documental (print da fonte):{' '}
-              <span className="font-semibold not-italic text-sinal-amarelo">[A CONFIRMAR]</span> —
-              o print real entra depois, da infraestrutura de fontes.
+              <span className="font-semibold not-italic text-sinal-amarelo">[A CONFIRMAR]</span> — o
+              print real entra depois, da infraestrutura de fontes.
             </p>
           )}
         </div>

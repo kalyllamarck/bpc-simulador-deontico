@@ -21,8 +21,8 @@ from __future__ import annotations
 # Pesos das dimensões da fórmula do peso (somam 1,0). Escolha metodológica declarada.
 PESOS = {
     "intensidade_restricao": 0.40,  # quão grave é a restrição ao mínimo existencial
-    "peso_abstrato": 0.35,          # peso abstrato do direito à assistência (art. 203, V, CF)
-    "seguranca_premissa": 0.25,     # segurança das premissas empíricas (laudo, estudo social)
+    "peso_abstrato": 0.35,  # peso abstrato do direito à assistência (art. 203, V, CF)
+    "seguranca_premissa": 0.25,  # segurança das premissas empíricas (laudo, estudo social)
 }
 
 _RESSALVA = (
@@ -45,9 +45,7 @@ def expor(escores: dict) -> dict:
         escore = float(escores.get(nome, 0.0))
         parcela = escore * peso
         peso_total += parcela
-        dimensoes.append(
-            {"nome": nome, "escore": escore, "peso": peso, "parcela": parcela}
-        )
+        dimensoes.append({"nome": nome, "escore": escore, "peso": peso, "parcela": parcela})
 
     return {
         "ancora": "alexy",

@@ -47,11 +47,25 @@ export default function RegrasRigidas() {
       >
         <div>
           <label className={rotulo}>Idade (anos completos)</label>
-          <input type="number" min={0} value={caso.idade} onChange={(e) => set({ idade: e.target.value })} className={`${campo} mt-1`} />
+          <input
+            type="number"
+            min={0}
+            value={caso.idade}
+            onChange={(e) => set({ idade: e.target.value })}
+            className={`${campo} mt-1`}
+          />
         </div>
         <div className="flex items-center gap-2 sm:pt-7">
-          <input id="def" type="checkbox" checked={caso.deficiente} onChange={(e) => set({ deficiente: e.target.checked })} className="h-4 w-4 accent-observa-petroleo" />
-          <label htmlFor="def" className="text-sm text-observa-petroleo">Pessoa com deficiência atestada</label>
+          <input
+            id="def"
+            type="checkbox"
+            checked={caso.deficiente}
+            onChange={(e) => set({ deficiente: e.target.checked })}
+            className="h-4 w-4 accent-observa-petroleo"
+          />
+          <label htmlFor="def" className="text-sm text-observa-petroleo">
+            Pessoa com deficiência atestada
+          </label>
         </div>
       </DispositivoNorma>
 
@@ -62,11 +76,21 @@ export default function RegrasRigidas() {
       >
         <div>
           <label className={rotulo}>Pessoas no grupo familiar</label>
-          <input type="number" min={1} value={caso.membros} onChange={(e) => set({ membros: Number(e.target.value) })} className={`${campo} mt-1`} />
+          <input
+            type="number"
+            min={1}
+            value={caso.membros}
+            onChange={(e) => set({ membros: Number(e.target.value) })}
+            className={`${campo} mt-1`}
+          />
         </div>
         <div>
           <label className={rotulo}>Renda mensal do grupo (R$)</label>
-          <input value={caso.rendaReais} onChange={(e) => set({ rendaReais: e.target.value })} className={`${campo} mt-1`} />
+          <input
+            value={caso.rendaReais}
+            onChange={(e) => set({ rendaReais: e.target.value })}
+            className={`${campo} mt-1`}
+          />
         </div>
       </DispositivoNorma>
 
@@ -77,7 +101,13 @@ export default function RegrasRigidas() {
       >
         <div>
           <label className={rotulo}>Impedimento de longo prazo (meses)</label>
-          <input type="number" min={0} value={caso.impedimentoMeses} onChange={(e) => set({ impedimentoMeses: e.target.value })} className={`${campo} mt-1`} />
+          <input
+            type="number"
+            min={0}
+            value={caso.impedimentoMeses}
+            onChange={(e) => set({ impedimentoMeses: e.target.value })}
+            className={`${campo} mt-1`}
+          />
         </div>
         <p className="text-xs italic text-observa-petroleo/70 sm:pt-7">
           O §10 considera de longo prazo o impedimento com efeitos por no mínimo 24 meses.
@@ -91,10 +121,15 @@ export default function RegrasRigidas() {
       >
         <div>
           <label className={rotulo}>Salário mínimo de referência (R$)</label>
-          <input value={caso.smReais} onChange={(e) => set({ smReais: e.target.value })} className={`${campo} mt-1`} />
+          <input
+            value={caso.smReais}
+            onChange={(e) => set({ smReais: e.target.value })}
+            className={`${campo} mt-1`}
+          />
         </div>
         <p className="text-xs italic text-observa-petroleo/70 sm:pt-7">
-          O teto legal é ¼ deste salário mínimo, comparado em centavos (sem arredondamento que altere a fração).
+          O teto legal é ¼ deste salário mínimo, comparado em centavos (sem arredondamento que
+          altere a fração).
         </p>
       </DispositivoNorma>
 
@@ -104,8 +139,16 @@ export default function RegrasRigidas() {
         fundamento="Condição estrita: acumular benefício vedado da seguridade barra a concessão (vedação de conceder), salvo as exceções legais."
       >
         <div className="flex items-center gap-2">
-          <input id="acu" type="checkbox" checked={caso.acumula} onChange={(e) => set({ acumula: e.target.checked })} className="h-4 w-4 accent-observa-petroleo" />
-          <label htmlFor="acu" className="text-sm text-observa-petroleo">Acumula benefício vedado pelo §4º</label>
+          <input
+            id="acu"
+            type="checkbox"
+            checked={caso.acumula}
+            onChange={(e) => set({ acumula: e.target.checked })}
+            className="h-4 w-4 accent-observa-petroleo"
+          />
+          <label htmlFor="acu" className="text-sm text-observa-petroleo">
+            Acumula benefício vedado pelo §4º
+          </label>
         </div>
       </DispositivoNorma>
 

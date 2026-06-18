@@ -71,12 +71,12 @@ class Requerente:
     centavos inteiros (DC-04).
     """
 
-    familia: list[MembroFamilia]      # composição do grupo familiar (art. 20, §1º; DC-06)
-    idade: int                        # anos completos
-    deficiente: bool                  # tem deficiência atestada (art. 20, §2º)
-    impedimento_meses: int            # duração do impedimento, em meses (art. 20, §10)
-    acumula_beneficio: bool           # já recebe benefício incompatível (art. 20, §4º)
-    salario_minimo_centavos: int      # salário mínimo de referência, em centavos
+    familia: list[MembroFamilia]  # composição do grupo familiar (art. 20, §1º; DC-06)
+    idade: int  # anos completos
+    deficiente: bool  # tem deficiência atestada (art. 20, §2º)
+    impedimento_meses: int  # duração do impedimento, em meses (art. 20, §10)
+    acumula_beneficio: bool  # já recebe benefício incompatível (art. 20, §4º)
+    salario_minimo_centavos: int  # salário mínimo de referência, em centavos
 
     # Resíduo valorativo: grau 0 a 1 já convergido (art. 20, §11). Não é veredito.
     # None = ainda não avaliado ou sem convergência ⇒ estado INDETERMINADO (DC-09).
@@ -98,7 +98,7 @@ def criterio_economico(x: Requerente, *, limiar: float = LIMIAR_MISERABILIDADE) 
     """
     if criterio_economico_objetivo(renda_per_capita(x), x.salario_minimo_centavos):  # R3
         return True
-    return miseravel(x.escore_miserabilidade, limiar=limiar)                          # R5
+    return miseravel(x.escore_miserabilidade, limiar=limiar)  # R5
 
 
 def concluir(x: Requerente, *, limiar: float = LIMIAR_MISERABILIDADE) -> str:
@@ -107,20 +107,20 @@ def concluir(x: Requerente, *, limiar: float = LIMIAR_MISERABILIDADE) -> str:
     Total e fechada: pressupõe entrada válida (use `simular` para validar antes). A ordem
     dos testes codifica a prioridade das regras.
     """
-    if acumula_beneficio_vedado(x.acumula_beneficio):                 # R6 — vedação
+    if acumula_beneficio_vedado(x.acumula_beneficio):  # R6 — vedação
         return F_CONCEDER
-    if not integra_publico(x.idade, x.deficiente):                    # R1 — público
+    if not integra_publico(x.idade, x.deficiente):  # R1 — público
         return F_CONCEDER
     if not impedimento_longo_ok(x.idade, x.deficiente, x.impedimento_meses):  # R2
         return F_CONCEDER
     if criterio_economico_objetivo(renda_per_capita(x), x.salario_minimo_centavos):  # R3
         return O_CONCEDER
-    estado = avaliar_miserabilidade(x.escore_miserabilidade, limiar=limiar)   # camada 2
-    if estado == ESTADO_MISERAVEL:                                    # R5 derrota R4
+    estado = avaliar_miserabilidade(x.escore_miserabilidade, limiar=limiar)  # camada 2
+    if estado == ESTADO_MISERAVEL:  # R5 derrota R4
         return O_CONCEDER
-    if estado == ESTADO_NAO_MISERAVEL:                                # R4 barra
+    if estado == ESTADO_NAO_MISERAVEL:  # R4 barra
         return F_CONCEDER
-    return INDETERMINADO                                              # exige valoração humana
+    return INDETERMINADO  # exige valoração humana
 
 
 def rastro(x: Requerente, *, limiar: float = LIMIAR_MISERABILIDADE) -> list[str]:
@@ -137,22 +137,30 @@ def rastro(x: Requerente, *, limiar: float = LIMIAR_MISERABILIDADE) -> list[str]
         return trilha
     if not impedimento_longo_ok(x.idade, x.deficiente, x.impedimento_meses):
         trilha.append(
-            "R2 (art. 20, §2º + §10): pessoa com deficiência sem impedimento de longo prazo → F_CONCEDER"
+            "R2 (art. 20, §2º + §10): pessoa com deficiência "
+            "sem impedimento de longo prazo → F_CONCEDER"
         )
         return trilha
     trilha.append("R1 (art. 20, caput): integra o público (pessoa idosa ou com deficiência)")
     if criterio_economico_objetivo(renda_per_capita(x), x.salario_minimo_centavos):
-        trilha.append("R3 (art. 20, §3º): renda per capita dentro do ¼ do salário mínimo → critério econômico satisfeito")
+        trilha.append(
+            "R3 (art. 20, §3º): renda per capita dentro do ¼ do salário mínimo "
+            "→ critério econômico satisfeito"
+        )
         trilha.append("R7 (art. 20): satisfeitas todas as condições → O_CONCEDER")
         return trilha
     estado = avaliar_miserabilidade(x.escore_miserabilidade, limiar=limiar)
     if estado == ESTADO_MISERAVEL:
-        trilha.append("R5 (art. 20, §11): miserabilidade comprovada DERROTA a regra-geral do ¼ do salário mínimo")
+        trilha.append(
+            "R5 (art. 20, §11): miserabilidade comprovada DERROTA "
+            "a regra-geral do ¼ do salário mínimo"
+        )
         trilha.append("R7 (art. 20): satisfeitas todas as condições → O_CONCEDER")
         return trilha
     if estado == ESTADO_NAO_MISERAVEL:
         trilha.append(
-            "R4 (art. 20, §3º): renda per capita acima do ¼ do salário mínimo, miserabilidade afastada → F_CONCEDER"
+            "R4 (art. 20, §3º): renda per capita acima do ¼ do salário mínimo, "
+            "miserabilidade afastada → F_CONCEDER"
         )
         return trilha
     trilha.append(

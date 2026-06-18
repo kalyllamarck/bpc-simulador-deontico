@@ -37,15 +37,55 @@ def grafo() -> dict:
     """
     nos = [
         # Nós de decisão — uma condição do art. 20 a cada bifurcação (ordem de `concluir`).
-        {"id": "R6", "rotulo": "Acumula benefício vedado?", "dispositivo": "art. 20, §4º", "tipo": "decisao"},
-        {"id": "R1", "rotulo": "Integra o público (idoso 65+ ou deficiente)?", "dispositivo": "art. 20, caput", "tipo": "decisao"},
-        {"id": "R2", "rotulo": "Impedimento de longo prazo (≥ 2 anos)?", "dispositivo": "art. 20, §2º + §10", "tipo": "decisao"},
-        {"id": "R3", "rotulo": "Renda per capita dentro do ¼ do salário mínimo?", "dispositivo": "art. 20, §3º", "tipo": "decisao"},
-        {"id": "R5R4", "rotulo": "Camada valorativa: miserabilidade comprovada (§11)?", "dispositivo": "art. 20, §11", "tipo": "decisao"},
+        {
+            "id": "R6",
+            "rotulo": "Acumula benefício vedado?",
+            "dispositivo": "art. 20, §4º",
+            "tipo": "decisao",
+        },
+        {
+            "id": "R1",
+            "rotulo": "Integra o público (idoso 65+ ou deficiente)?",
+            "dispositivo": "art. 20, caput",
+            "tipo": "decisao",
+        },
+        {
+            "id": "R2",
+            "rotulo": "Impedimento de longo prazo (≥ 2 anos)?",
+            "dispositivo": "art. 20, §2º + §10",
+            "tipo": "decisao",
+        },
+        {
+            "id": "R3",
+            "rotulo": "Renda per capita dentro do ¼ do salário mínimo?",
+            "dispositivo": "art. 20, §3º",
+            "tipo": "decisao",
+        },
+        {
+            "id": "R5R4",
+            "rotulo": "Camada valorativa: miserabilidade comprovada (§11)?",
+            "dispositivo": "art. 20, §11",
+            "tipo": "decisao",
+        },
         # Nós terminais — coincidem com os functores do motor (DC-10, DC-11).
-        {"id": O_CONCEDER, "rotulo": "Obrigatório conceder", "dispositivo": "art. 20 (R7)", "tipo": "terminal"},
-        {"id": F_CONCEDER, "rotulo": "Proibido conceder", "dispositivo": "art. 20", "tipo": "terminal"},
-        {"id": INDETERMINADO, "rotulo": "Indeterminado — exige valoração humana", "dispositivo": "art. 20, §11", "tipo": "terminal"},
+        {
+            "id": O_CONCEDER,
+            "rotulo": "Obrigatório conceder",
+            "dispositivo": "art. 20 (R7)",
+            "tipo": "terminal",
+        },
+        {
+            "id": F_CONCEDER,
+            "rotulo": "Proibido conceder",
+            "dispositivo": "art. 20",
+            "tipo": "terminal",
+        },
+        {
+            "id": INDETERMINADO,
+            "rotulo": "Indeterminado — exige valoração humana",
+            "dispositivo": "art. 20, §11",
+            "tipo": "terminal",
+        },
     ]
 
     arestas = [
@@ -62,9 +102,21 @@ def grafo() -> dict:
         {"de": "R3", "para": O_CONCEDER, "condicao": "renda dentro do ¼ do salário mínimo"},
         {"de": "R3", "para": "R5R4", "condicao": "renda acima do ¼ do salário mínimo"},
         # Camada valorativa (§11): R5 derrota R4, R4 barra, ou INDETERMINADO.
-        {"de": "R5R4", "para": O_CONCEDER, "condicao": "R5: miserabilidade comprovada derrota a regra-geral"},
-        {"de": "R5R4", "para": F_CONCEDER, "condicao": "R4: miserabilidade afastada barra a concessão"},
-        {"de": "R5R4", "para": INDETERMINADO, "condicao": "miserabilidade por resolver (grau ausente ou sem convergência)"},
+        {
+            "de": "R5R4",
+            "para": O_CONCEDER,
+            "condicao": "R5: miserabilidade comprovada derrota a regra-geral",
+        },
+        {
+            "de": "R5R4",
+            "para": F_CONCEDER,
+            "condicao": "R4: miserabilidade afastada barra a concessão",
+        },
+        {
+            "de": "R5R4",
+            "para": INDETERMINADO,
+            "condicao": "miserabilidade por resolver (grau ausente ou sem convergência)",
+        },
     ]
 
     decisoes = sum(1 for n in nos if n["tipo"] == "decisao")
@@ -76,11 +128,7 @@ def grafo() -> dict:
     # Caminhos da entrada (R6) a um terminal: cada saída de decisão que leva a terminal é
     # um caminho; aqui cada decisão tem exatamente um ramo terminal e um ramo de avanço,
     # logo o número de caminhos completos coincide com o de ramos terminais.
-    caminhos = sum(
-        1
-        for a in arestas
-        if a["para"] in {O_CONCEDER, F_CONCEDER, INDETERMINADO}
-    )
+    caminhos = sum(1 for a in arestas if a["para"] in {O_CONCEDER, F_CONCEDER, INDETERMINADO})
 
     return {
         "nos": nos,

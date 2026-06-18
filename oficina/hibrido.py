@@ -3,10 +3,10 @@
 Fundamento (tese do Kalyl, artigo "Conversão de norma sustentável em linguística computacional";
 padrão do sistema BPC): regra qualitativa vira determinística acoplando duas camadas:
 
-    (1) PROPOSITOR (IA)  — interpreta o sentido e devolve um sinal ESTRUTURADO (escore + justificativa).
-                           NUNCA decide. Roda N vezes a temperatura 0.
-    (2) CONVERGÊNCIA     — aceita o sinal só se as N execuções concordam (desvio < epsilon e os bits
-                           de gate coincidem ≥ limiar). Senão: indeterminação → escala humana (warn).
+    (1) PROPOSITOR (IA)  — interpreta o sentido e devolve um sinal ESTRUTURADO
+                           (escore + justificativa). NUNCA decide. Roda N vezes a temperatura 0.
+    (2) CONVERGÊNCIA     — aceita o sinal só se as N execuções concordam (desvio < epsilon e os
+                           bits de gate coincidem ≥ limiar). Senão: indeterminação → escala humana.
     (3) DEÔNTICO         — função PURA: recebe o escore convergido + o limiar e devolve a flag.
                            É o ÚNICO que decide passa/falha.
 
@@ -25,9 +25,9 @@ from typing import Protocol
 class Proposta:
     """Sinal estruturado devolvido pelo propositor numa execução."""
 
-    escore: float            # 0.0–1.0: grau em que a propriedade qualitativa se verifica
-    justificativa: str       # obrigatória; registrada ANTES de qualquer cálculo
-    bit: bool                # leitura booleana do propositor (ex.: "é poético?"), usada na convergência
+    escore: float  # 0.0–1.0: grau em que a propriedade qualitativa se verifica
+    justificativa: str  # obrigatória; registrada ANTES de qualquer cálculo
+    bit: bool  # leitura booleana do propositor (ex.: "é poético?"), usada na convergência
 
 
 class Propositor(Protocol):
@@ -39,9 +39,9 @@ class Propositor(Protocol):
 @dataclass(frozen=True)
 class Convergencia:
     convergiu: bool
-    escore: float            # mediana dos escores quando convergiu (NaN se não)
-    bit: bool                # bit majoritário
-    motivo: str              # explicação (p/ a mensagem do Finding)
+    escore: float  # mediana dos escores quando convergiu (NaN se não)
+    bit: bool  # bit majoritário
+    motivo: str  # explicação (p/ a mensagem do Finding)
 
 
 def avaliar_convergencia(
@@ -65,11 +65,19 @@ def avaliar_convergencia(
     bit_majoritario = n_true * 2 >= len(propostas)
 
     if desvio >= epsilon:
-        return Convergencia(False, float("nan"), bit_majoritario,
-                            f"escores divergem (amplitude {desvio:.2f} ≥ epsilon {epsilon})")
+        return Convergencia(
+            False,
+            float("nan"),
+            bit_majoritario,
+            f"escores divergem (amplitude {desvio:.2f} ≥ epsilon {epsilon})",
+        )
     if frac_majoritaria < limiar_bits:
-        return Convergencia(False, float("nan"), bit_majoritario,
-                            f"bits divergem (concordância {frac_majoritaria:.0%} < {limiar_bits:.0%})")
+        return Convergencia(
+            False,
+            float("nan"),
+            bit_majoritario,
+            f"bits divergem (concordância {frac_majoritaria:.0%} < {limiar_bits:.0%})",
+        )
     return Convergencia(True, statistics.median(escores), bit_majoritario, "convergiu")
 
 

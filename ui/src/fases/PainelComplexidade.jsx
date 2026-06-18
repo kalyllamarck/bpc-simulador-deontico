@@ -4,9 +4,21 @@
 export default function PainelComplexidade({ complexidade, explicacao }) {
   if (!complexidade) return null
   const itens = [
-    { rotulo: 'Decisões da norma', valor: complexidade.decisoes, nota: 'um juízo por dispositivo do art. 20' },
-    { rotulo: 'Caminhos possíveis', valor: complexidade.caminhos, nota: 'combinações até um dos desfechos' },
-    { rotulo: 'Medida da estrutura', valor: complexidade.ciclomatica, nota: 'decisões + 1 (retrato da lei)' },
+    {
+      rotulo: 'Decisões da norma',
+      valor: complexidade.decisoes,
+      nota: 'um juízo por dispositivo do art. 20',
+    },
+    {
+      rotulo: 'Caminhos possíveis',
+      valor: complexidade.caminhos,
+      nota: 'combinações até um dos desfechos',
+    },
+    {
+      rotulo: 'Medida da estrutura',
+      valor: complexidade.ciclomatica,
+      nota: 'decisões + 1 (retrato da lei)',
+    },
   ]
   return (
     <div className="rounded-marca border border-observa-borda bg-white p-5 shadow-carta">

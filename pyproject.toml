@@ -13,3 +13,20 @@ addopts = "-m 'not llm_real'"
 markers = [
     "llm_real: chama LLM de verdade (custo+rede); excluído do gate, roda no nightly",
 ]
+
+# Higiene de código (não confundir com o gate de CONTEÚDO da oficina): só formata e
+# aponta erros mecânicos de Python. Nunca decide passa/falha de norma.
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+# E/W pycodestyle, F pyflakes, I import-sort, UP pyupgrade, B bugbear.
+select = ["E", "W", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# api/main.py insere a raiz no sys.path ANTES de importar `dominios` (necessário p/ rodar
+# a API fora de um pacote instalado) — o import tardio é proposital, não um erro.
+"api/main.py" = ["E402"]
+# Testes podem ter asserts/fixtures com nomes longos e imports locais.
+"**/tests/**" = ["E402"]

@@ -25,14 +25,15 @@ from dominios.impacto.impacto import (
 def _ancoras_teste(elast_renda=None) -> dict:
     return {
         "gasto_bpc_2024_bilhoes": {"valor": 100.0, "fonte": "fonte-teste-gasto"},
-        "estoque_total_beneficios_emitidos_2025": {"valor": 5_000_000,
-                                                    "fonte": "fonte-teste-estoque"},
+        "estoque_total_beneficios_emitidos_2025": {
+            "valor": 5_000_000,
+            "fonte": "fonte-teste-estoque",
+        },
         "beneficio_unitario_sm": {"2024": 1_000.0, "fonte": "fonte-teste-sm"},
         "meses": {"valor": 12},
         "semaforo": {"limiar_amarelo_pct": 20, "limiar_vermelho_pct": 50},
         "elasticidades": {
-            "elasticidade_limiar_renda_1_4_para_1_2_SM": {"valor": elast_renda,
-                                                          "_baseline": 0.25},
+            "elasticidade_limiar_renda_1_4_para_1_2_SM": {"valor": elast_renda, "_baseline": 0.25},
             "elasticidade_criterio_etario": {"valor": None, "_baseline": 65},
             "elasticidade_criterio_deficiencia": {"valor": None, "_baseline": 24},
         },
@@ -40,6 +41,7 @@ def _ancoras_teste(elast_renda=None) -> dict:
 
 
 # ---- §2.1 formula base ------------------------------------------------------------
+
 
 def test_impacto_anual_reais_produto_exato():
     # 1.000 benef x R$ 1.412 x 12 = R$ 16.944.000
@@ -55,6 +57,7 @@ def test_impacto_anual_meses_default_12():
 
 
 # ---- GUARDRAIL de elasticidade ----------------------------------------------------
+
 
 def test_estimar_delta_null_sem_hipotese_devolve_none():
     a = _ancoras_teste()  # renda null
@@ -122,6 +125,7 @@ def test_simular_idade_sinal_negativo_com_hipotese():
 
 # ---- §3.2 semaforo nos 3 cortes ---------------------------------------------------
 
+
 def test_semaforo_verde_abaixo_do_amarelo():
     a = _ancoras_teste()  # gasto atual 100 bi
     s = semaforo_art201(110_000_000_000, ancoras=a)  # +10%
@@ -161,6 +165,7 @@ def test_semaforo_verde_quando_gasto_cai():
 
 # ---- o ancoras.json real carrega e tem as ancoras CONFIRMADAS ---------------------
 
+
 def test_ancoras_json_real_carrega_e_tem_valores_confirmados():
     a = carregar_ancoras()
     assert a["gasto_bpc_2024_bilhoes"]["valor"] == 113.421
@@ -181,9 +186,11 @@ def test_ancoras_json_real_elasticidades_e_takeup_sao_null():
     a = carregar_ancoras()
     assert a["taxa_adesao_take_up_bpc_idoso"]["valor"] is None
     assert a["taxa_adesao_take_up_bpc_pcd"]["valor"] is None
-    for chave in ("elasticidade_limiar_renda_1_4_para_1_2_SM",
-                  "elasticidade_criterio_etario",
-                  "elasticidade_criterio_deficiencia"):
+    for chave in (
+        "elasticidade_limiar_renda_1_4_para_1_2_SM",
+        "elasticidade_criterio_etario",
+        "elasticidade_criterio_deficiencia",
+    ):
         assert a["elasticidades"][chave]["valor"] is None
         assert a["elasticidades"][chave]["status"] == "A_CONFIRMAR"
 

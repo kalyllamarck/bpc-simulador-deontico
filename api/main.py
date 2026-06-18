@@ -52,6 +52,7 @@ app.add_middleware(
 
 # ─── Tela 1 — Valoração ────────────────────────────────────────────────────────
 
+
 class MembroEntrada(BaseModel):
     renda_centavos: int = 0
     papel: str = "requerente"
@@ -73,8 +74,7 @@ def _montar_requerente(entrada: RequerenteEntrada) -> motor_norma.Requerente:
     """Monta o Requerente (art. 20) a partir da entrada Pydantic. Reusado pelos endpoints."""
     return motor_norma.Requerente(
         familia=[
-            MembroFamilia(renda_centavos=m.renda_centavos, papel=m.papel)
-            for m in entrada.familia
+            MembroFamilia(renda_centavos=m.renda_centavos, papel=m.papel) for m in entrada.familia
         ],
         idade=entrada.idade,
         deficiente=entrada.deficiente,
@@ -92,6 +92,7 @@ def simular(entrada: RequerenteEntrada) -> dict:
 
 
 # ─── Tela 2 — Impacto ──────────────────────────────────────────────────────────
+
 
 class ImpactoEntrada(BaseModel):
     parametro: str  # "renda" | "idade" | "deficiencia"
@@ -115,6 +116,7 @@ def impacto(entrada: ImpactoEntrada) -> dict:
 
 # ─── Grafo ciclomático — estrutura de decisão da norma ───────────────────────────
 
+
 @app.get("/grafo")
 def grafo() -> dict:
     """Expõe o grafo de fluxo de controle do art. 20 e a complexidade ciclomática."""
@@ -122,6 +124,7 @@ def grafo() -> dict:
 
 
 # ─── Valoração doutrinária (expositiva) — Alexy ou Müller ────────────────────────
+
 
 class ValorarEntrada(RequerenteEntrada):
     """Os fatos do requerente + a âncora doutrinária e escores opcionais (Alexy)."""
@@ -148,6 +151,7 @@ def valorar(entrada: ValorarEntrada) -> dict:
 
 
 # ─── Justificação de MacCormick (silogismo + 3 gates) ────────────────────────────
+
 
 @app.post("/decidir-maccormick")
 def decidir_maccormick(entrada: RequerenteEntrada) -> dict:

@@ -38,9 +38,9 @@ LIMIAR_MISERABILIDADE = 0.50
 
 
 # Estados fechados da camada da miserabilidade (camada valorativa).
-ESTADO_MISERAVEL = "MISERAVEL"            # comprovada — derrota a regra-geral (R5)
-ESTADO_NAO_MISERAVEL = "NAO_MISERAVEL"    # afastada — a regra-geral barra (R4)
-ESTADO_INDETERMINADO = "INDETERMINADO"    # grau ausente/sem convergência — valoração humana
+ESTADO_MISERAVEL = "MISERAVEL"  # comprovada — derrota a regra-geral (R5)
+ESTADO_NAO_MISERAVEL = "NAO_MISERAVEL"  # afastada — a regra-geral barra (R4)
+ESTADO_INDETERMINADO = "INDETERMINADO"  # grau ausente/sem convergência — valoração humana
 
 
 def miseravel(
@@ -75,4 +75,6 @@ def avaliar_miserabilidade(
     """
     if escore_miserabilidade is None:
         return ESTADO_INDETERMINADO
-    return ESTADO_MISERAVEL if decidir(escore_miserabilidade, limiar=limiar) else ESTADO_NAO_MISERAVEL
+    return (
+        ESTADO_MISERAVEL if decidir(escore_miserabilidade, limiar=limiar) else ESTADO_NAO_MISERAVEL
+    )

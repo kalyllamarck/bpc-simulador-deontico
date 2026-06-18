@@ -21,5 +21,12 @@ sobre o orçamento e o equilíbrio do art. 201 da CF.
 - `fixtures/sentencas-bpc/` — corpus de sentenças reais (validação 5/5).
 - `pesquisa/` — pesquisa do conselho.
 
+## Higiene de código (não é o gate de conteúdo)
+Linters mecânicos — só formatam e apontam erro de código; **nunca** decidem a norma.
+- Python: `ruff check .` e `ruff format .` (config no `pyproject.toml`).
+- Front: `cd ui && npm run lint` e `npm run format` (ESLint + Prettier).
+- Gate no commit: `git config core.hooksPath .githooks` (uma vez) liga o hook que roda os dois.
+  Alternativa com framework: `pip install pre-commit && pre-commit install` (lê `.pre-commit-config.yaml`).
+
 ## Princípios (herdados)
 KISS · IA nunca decide o gate · validação determinística reusa `oficina/hibrido.py`.
