@@ -1,8 +1,9 @@
 /* Fase complementar — Impacto e art. 201.
  *
- * O jurista mexe num parâmetro da norma e o sistema estima a variação de
- * beneficiários e de gasto, e acende o semáforo de pressão sobre o art. 201.
- * Tudo é estimativa de ordem de grandeza, não previsão oficial.
+ * O jurista altera hipoteticamente um parâmetro do benefício e o sistema estima a
+ * variação de beneficiários e de gasto, acendendo o indicador argumentativo de pressão
+ * sobre o equilíbrio do art. 201. Tudo é estimativa de ordem de grandeza, não previsão
+ * oficial. O sistema aplica a norma; a IA jamais decide.
  *
  * Correção da auditoria: "baseline" vira "patamar legal" na tela; o slider persiste
  * o valor no cálculo (estado local controlado, lido no botão Estimar).
@@ -10,6 +11,7 @@
 import { useState } from 'react'
 import { simularImpacto } from '../api'
 import { OrigemDado } from '../componentes/Resultado'
+import NotaCitacao from '../componentes/NotaCitacao'
 
 const CLASSE_SINAL = {
   verde: { ponto: 'bg-sinal-verde', texto: 'text-sinal-verde', borda: 'border-sinal-verde' },
@@ -74,7 +76,7 @@ function SemaforoArt201({ semaforo }) {
   return (
     <div className={`rounded-marca border-l-4 ${c.borda} bg-white p-5 shadow-carta`}>
       <p className="text-xs font-semibold uppercase tracking-wide text-observa-petroleo/70">
-        Semáforo do art. 201, CF/88 — tensão com a seguridade
+        Indicador argumentativo do art. 201, CF/88 — pressão sobre a seguridade social
       </p>
       <div className="mt-2 flex items-center gap-2">
         <span className={`inline-block h-4 w-4 rounded-full ${c.ponto}`} />
@@ -85,9 +87,20 @@ function SemaforoArt201({ semaforo }) {
         </span>
       </div>
       <p className="mt-3 rounded-marca bg-observa-palido/40 p-3 text-sm leading-relaxed text-observa-petroleo/85">
-        Este sinal <strong>expõe a tensão orçamentária; não declara inconstitucionalidade</strong>.
-        O BPC é assistência social (art. 203, V), e não seguro contributivo do art. 201 — o elo é
-        argumentativo, não automático: um indicador de pressão sobre a seguridade, não um veredito.
+        Este sinal é{' '}
+        <strong>
+          indicador argumentativo; não declara inconstitucionalidade nem emite veredito
+        </strong>
+        . O benefício de prestação continuada é prestação de assistência social (art. 203, V), não
+        seguro contributivo regido pelo equilíbrio do art. 201 — o vínculo entre a despesa e o
+        equilíbrio da seguridade social é argumentativo, não automático. O semáforo apenas mede a
+        pressão fiscal sobre a seguridade, cuja ordem de grandeza se aproxima do gasto público
+        brasileiro com pensões em proporção do PIB
+        <NotaCitacao id="O001-u01" />, e a cuja leitura ortodoxa se associa a controvertida tese do
+        limiar dívida/PIB
+        <NotaCitacao id="EC05-u01" />. Essa pressão deve ser ponderada contra o mínimo existencial
+        que o benefício assegura
+        <NotaCitacao id="LN09-u01" />.
       </p>
     </div>
   )
@@ -123,14 +136,17 @@ export default function TelaImpacto() {
   return (
     <div className="flex flex-col gap-6">
       <p className="text-sm leading-relaxed text-observa-petroleo/80">
-        Fase complementar. O jurista mexe num parâmetro da norma e o sistema estima a variação de
-        beneficiários e de gasto, e acende o semáforo de pressão sobre o art. 201. Tudo é estimativa
-        de ordem de grandeza, não previsão oficial.
+        Fase complementar. O jurista altera hipoteticamente um parâmetro do benefício — parâmetros
+        cuja competência legislativa é privativa da União
+        <NotaCitacao id="RD01-u01" /> — e o sistema estima a variação de beneficiários e de gasto,
+        acendendo o semáforo de pressão sobre o equilíbrio do art. 201. Todos os números são
+        estimativas de ordem de grandeza, não previsão oficial.
       </p>
 
       <p className="rounded-marca border-l-4 border-observa-menta bg-observa-menta/10 p-3 text-xs leading-relaxed text-observa-petroleo/85">
-        Estimativa de ordem de grandeza (microssimulação de 1ª ordem). Não capta comportamento nem
-        equilíbrio geral. Elasticidades pendentes de calibração na PNADc.
+        Estimativa de ordem de grandeza (microssimulação de primeira ordem). Não capta resposta
+        comportamental nem efeitos de equilíbrio geral. As elasticidades permanecem pendentes de
+        calibração na PNAD Contínua.
       </p>
 
       <div className="flex flex-wrap gap-2">
@@ -175,13 +191,13 @@ export default function TelaImpacto() {
           <input
             value={hipotese}
             onChange={(e) => setHipotese(e.target.value)}
-            placeholder="deixe vazio: pendente de calibração na PNADc"
+            placeholder="deixe vazio: pendente de calibração na PNAD Contínua"
             className="mt-1 w-full rounded-marca border border-observa-borda bg-white px-3 py-2 text-sm text-observa-petroleo focus:border-observa-menta focus:outline-none"
           />
           <p className="mt-1 text-xs italic text-observa-petroleo/70">
-            Sem este campo, o sistema não inventa número: as elasticidades estão pendentes de
-            calibração na PNADc. Ao informar uma hipótese, o resultado sai rotulado como hipótese do
-            jurista, não calibrada.
+            Sem este campo, o sistema não arbitra valores: as elasticidades permanecem pendentes de
+            calibração na PNAD Contínua. Informada uma hipótese, o resultado sai rotulado como
+            hipótese do jurista, não calibrada.
           </p>
         </div>
 
@@ -197,12 +213,12 @@ export default function TelaImpacto() {
       {naoCalibrado && (
         <div className="rounded-marca border-l-4 border-sinal-amarelo bg-white p-5 shadow-carta">
           <p className="text-xs font-semibold uppercase tracking-wide text-observa-petroleo/70">
-            Estimativa pendente de calibração (PNADc)
+            Estimativa pendente de calibração (PNAD Contínua)
           </p>
           <p className="mt-2 text-sm leading-relaxed text-observa-petroleo/85">
-            O sistema não inventa número. A elasticidade deste parâmetro ainda não foi calibrada
-            sobre a PNADc. Calcule a elasticidade na PNADc ou informe acima uma hipótese explícita
-            do jurista — que sairá rotulada como não calibrada.
+            O sistema não arbitra valores. A elasticidade deste parâmetro ainda não foi calibrada
+            sobre a PNAD Contínua. Calibre a elasticidade na PNAD Contínua ou informe acima uma
+            hipótese explícita do jurista — que sairá rotulada como não calibrada.
           </p>
           {resposta.mensagem && (
             <p className="mt-2 text-sm italic text-observa-petroleo/70">{resposta.mensagem}</p>

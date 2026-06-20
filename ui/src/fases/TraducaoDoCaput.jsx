@@ -31,12 +31,12 @@ const REALCES = [
   {
     trecho: 'não possuir meios de prover a própria manutenção',
     simbolo: '¬',
-    titulo: 'negação: ¬ meios próprios',
+    titulo: 'negação (antecedente): ¬ meios próprios',
   },
   {
     trecho: 'nem de tê-la provida por sua família',
     simbolo: '¬',
-    titulo: 'negação: ¬ meios da família',
+    titulo: 'negação (antecedente): ¬ meios da família',
   },
 ]
 
@@ -46,10 +46,11 @@ export default function TraducaoDoCaput() {
     <div className="flex flex-col gap-6">
       <Revelar>
         <p className="text-sm leading-relaxed text-observa-petroleo/80">
-          Antes do grafo, a tradução. A norma é texto; o sistema a aplica como lógica. Comece pelo{' '}
-          <strong>art. 20, caput</strong>: leia o dispositivo, veja a fonte e então a sua leitura
-          deôntica — quais termos viram <strong>operadores lógicos</strong> e qual o{' '}
-          <strong>functor</strong> (O, P ou F).
+          Antes do grafo, a tradução. A norma jurídica é uma proposição prescritiva
+          <NotaCitacao id="BB01-u01" />; o sistema a aplica por <strong>subsunção</strong>. Comece
+          pelo <strong>art. 20, caput</strong>: leia o dispositivo, veja a fonte e então a sua
+          leitura deôntica — quais termos viram <strong>operadores deônticos</strong> e qual o{' '}
+          <strong>functor deôntico</strong> (O, P ou F).
         </p>
       </Revelar>
 
@@ -84,7 +85,8 @@ export default function TraducaoDoCaput() {
           </p>
           <p className="mt-2 text-xs leading-relaxed text-observa-petroleo/70">
             Atenção ao termo exato da norma: o caput usa “e” entre idoso e pessoa com deficiência,
-            mas a aplicação é <strong>disjuntiva</strong> — cada um, por si, integra o público.
+            mas a aplicação é <strong>disjuntiva</strong> — cada qual, por si, é titular do direito
+            e integra o público (idoso ∨ pessoa com deficiência).
             <NotaCitacao id="C004-u01" />
           </p>
           <RevelarSequencia className="mt-3 flex flex-col gap-2">
@@ -124,6 +126,13 @@ export default function TraducaoDoCaput() {
             {D.formula}
           </p>
           <p className="mt-2 text-xs leading-relaxed text-observa-petroleo/70">{D.glosa}</p>
+          <p className="mt-2 text-xs leading-relaxed text-observa-petroleo/60">
+            A norma tem estrutura lógica D(p→q): o functor dever-ser
+            <NotaCitacao id="DOC008-u01" /> liga um <strong>antecedente</strong> (a hipótese:
+            público e condições) a um <strong>consequente</strong> (a relação prescritiva).
+            Subsumido o caso ao antecedente, o consequente se impõe.
+            <NotaCitacao id="LN08-u01" />
+          </p>
         </div>
       </Revelar>
 

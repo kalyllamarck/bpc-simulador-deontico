@@ -36,19 +36,19 @@ export const DEONTICA = {
         texto: 'pessoa com deficiência OU idoso 65+',
         op: 'disjuncao',
         glosa:
-          'integra o público se idoso (≥ 65 anos) ∨ pessoa com deficiência — o motor: integra_publico(idade, deficiente)',
+          'integra o público quando idoso (≥ 65 anos) ∨ pessoa com deficiência: operador deôntico de disjunção no antecedente da norma — o motor: integra_publico(idade, deficiente)',
       },
       {
         texto: 'NÃO possuir meios de prover a própria manutenção NEM tê-la provida pela família',
         op: 'negacao',
         glosa:
-          'dupla negação (¬ meios próprios ∧ ¬ meios da família) — remete ao critério econômico do §3º',
+          'dupla negação no antecedente (¬ meios próprios ∧ ¬ meios da família): a hipoteca econômica que o §3º operacionaliza pela renda mensal per capita',
       },
     ],
     formula: 'O(conceder) ← (idoso ∨ deficiente) ∧ ¬meios ∧ demais condições',
     glosa:
-      'O caput fixa o functor da norma (O: garantia de um salário-mínimo) e delimita o público. A subsunção do público é determinística.',
-    notas: ['C004-u01'], // direito/dever (Hohfeld)
+      'O caput é a norma jurídica nuclear: enuncia, sob a forma de proposição prescritiva, o functor deôntico O (Estado obrigado a garantir um salário-mínimo) e delimita o público no antecedente. A subsunção do público ao antecedente é determinística.',
+    notas: ['BB01-u01', 'C004-u01'], // norma como proposição prescritiva (Bobbio); relação jurídica direito/dever (Hohfeld)
   },
   p1: {
     rotulo: 'Art. 20, §1º',
@@ -101,7 +101,7 @@ export const DEONTICA = {
     ],
     formula: 'R3 ⇔ renda_per_capita < (salário_mínimo ÷ 4)',
     glosa:
-      'O critério econômico objetivo. Presunção relativa de incapacidade econômica — derrotável pelo §11 (DC-03).',
+      'O critério econômico objetivo: comparação relacional da renda mensal per capita com o limiar de ¼ do salário-mínimo. Institui presunção relativa de incapacidade econômica, derrotável pelo §11 (derrotabilidade, DC-03).',
     notas: [],
   },
   p4: {
@@ -114,7 +114,7 @@ export const DEONTICA = {
         texto: 'NÃO PODE ser acumulado com outro benefício da seguridade',
         op: 'negacao',
         glosa:
-          'proibição expressa (functor F): ¬ acumulação. O motor testa primeiro (vedação absoluta): acumula_beneficio_vedado(...)',
+          'proibição expressa (functor deôntico F): ¬ acumulação. O motor a testa primeiro, como vedação absoluta no antecedente: acumula_beneficio_vedado(...)',
       },
     ],
     formula: 'F(conceder) ← acumula_benefício_vedado',
@@ -148,13 +148,13 @@ export const DEONTICA = {
         texto: 'PODERÃO ser utilizados outros elementos probatórios da miserabilidade',
         op: 'negacao',
         glosa:
-          'faculdade probatória (functor P) que DERROTA a presunção do §3º (derrotabilidade, DC-03). É o único resíduo valorativo: a IA interpreta e propõe o grau; a linha determinística decide.',
+          'faculdade probatória (functor P) que derrota a presunção do §3º (derrotabilidade, DC-03). É o único resíduo valorativo do art. 20 — zona de indeterminação valorativa em que a IA interpreta e propõe o grau, sem decidir; a linha determinística é que conclui.',
       },
     ],
     formula: 'P(provar miserabilidade) ⇒ derrota R4 (presunção do ¼ SM)',
     glosa:
-      'A cláusula de abertura (§11): permite superar a presunção do §3º. Resíduo valorativo — se não houver convergência, o estado é INDETERMINADO e escala para o estudo social (DC-09).',
-    notas: ['A001-u01', 'DOC005-u01'], // derrotabilidade (Prakken & Sartor); textura aberta (Hart)
+      'A cláusula de abertura (§11): permite superar a presunção do §3º. É a textura aberta da norma — resíduo valorativo onde a subsunção não se fecha. Sem convergência, o estado permanece INDETERMINADO e a valoração é deferida ao jurista, externamente, no estudo social (DC-09).',
+    notas: ['A001-u01', 'DOC005-u01'], // derrotabilidade (Prakken & Sartor); textura aberta, núcleo de certeza (Hart)
   },
 }
 

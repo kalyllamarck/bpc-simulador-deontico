@@ -10,6 +10,7 @@ import { useCaso, casoParaRequerente } from '../CasoContext'
 import { simularValoracao } from '../api'
 import DispositivoNorma from './DispositivoNorma'
 import Resultado from '../componentes/Resultado'
+import NotaCitacao from '../componentes/NotaCitacao'
 import { DISPOSITIVOS } from '../citacoes'
 
 const campo =
@@ -34,16 +35,26 @@ export default function RegrasRigidas() {
   return (
     <div className="flex flex-col gap-6">
       <p className="text-sm leading-relaxed text-observa-petroleo/80">
-        Aqui a norma é percorrida dispositivo a dispositivo, na ordem da lei. Para cada um, primeiro
-        o texto legal; logo abaixo, o que precisa ser coletado do caso. Estas são as regras rígidas:
-        subsunção direta, sem juízo de valor. O resíduo valorativo (miserabilidade) fica para a fase
-        seguinte.
+        Aqui o dispositivo é percorrido na ordem da lei. Para cada um, primeiro o texto legal; logo
+        abaixo, o antecedente de fato a coletar do caso. Estas são as regras rígidas: o sistema
+        realiza a subsunção determinística do fato ao antecedente normativo, sem margem de escolha —
+        no núcleo de certeza, o caso claro resolve-se pela própria letra da norma.
+        <NotaCitacao id="DOC005-u01" /> Trata-se do subconjunto computável do direito, em que o
+        dispositivo se exprime como regra executável.
+        <NotaCitacao id="A002-u01" /> O resíduo valorativo (a miserabilidade do §3º) não se subsume
+        por esta via e fica reservado à fase seguinte.
       </p>
 
       {/* caput — público */}
       <DispositivoNorma
         dispositivo={DISPOSITIVOS.caput}
-        fundamento="Define o público: pessoa idosa (65 anos ou mais) OU pessoa com deficiência. Sem integrar o público, a norma veda a concessão."
+        fundamento={
+          <>
+            Antecedente subjetivo: pessoa idosa (65 anos ou mais) ou pessoa com deficiência. A
+            disjunção é condição de aplicabilidade — sem integrar o público, a subsunção falha e a
+            norma não autoriza a concessão.
+          </>
+        }
       >
         <div>
           <label className={rotulo}>Idade (anos completos)</label>
@@ -72,7 +83,12 @@ export default function RegrasRigidas() {
       {/* §1º — família + renda per capita */}
       <DispositivoNorma
         dispositivo={DISPOSITIVOS.p1}
-        fundamento="A composição do grupo familiar determina o número de pessoas que dividem a renda — base do cálculo per capita do §3º."
+        fundamento={
+          <>
+            A composição do grupo familiar fixa o divisor da renda mensal do grupo — base do cálculo
+            da renda mensal per capita exigido pelo §3º.
+          </>
+        }
       >
         <div>
           <label className={rotulo}>Pessoas no grupo familiar</label>
@@ -97,7 +113,14 @@ export default function RegrasRigidas() {
       {/* §2º + §10 — impedimento de longo prazo */}
       <DispositivoNorma
         dispositivo={DISPOSITIVOS.p2}
-        fundamento="O §10 fixa o impedimento de longo prazo em ao menos 2 anos (24 meses). Aplica-se ao requerente com deficiência."
+        fundamento={
+          <>
+            O §10 define o impedimento de longo prazo como aquele com efeitos por no mínimo 24
+            meses, aplicável ao requerente com deficiência. O limiar é numérico e a comparação,
+            exata: o antecedente subsume-se sem juízo de valor.
+            <NotaCitacao id="A002-u01" />
+          </>
+        }
       >
         <div>
           <label className={rotulo}>Impedimento de longo prazo (meses)</label>
@@ -117,7 +140,18 @@ export default function RegrasRigidas() {
       {/* §3º — ¼ do salário mínimo */}
       <DispositivoNorma
         dispositivo={DISPOSITIVOS.p3}
-        fundamento="Critério econômico: renda per capita inferior a ¼ do salário mínimo presume a incapacidade de prover a manutenção."
+        fundamento={
+          <>
+            Critério econômico: renda mensal per capita inferior a ¼ do salário-mínimo presume a
+            incapacidade de prover a própria manutenção. O cálculo é determinístico, mas a fronteira
+            do limiar (a miserabilidade no caso-limite) é justamente onde a complexidade inerente
+            persiste e escapa à regra executável
+            <NotaCitacao id="O005-u01" /> — uma interpretação plenamente matizada da ambiguidade não
+            se reduz ao tratamento automatizado e cabe ao estudo social, externamente, na fase do
+            indeterminado.
+            <NotaCitacao id="A003-u01" />
+          </>
+        }
       >
         <div>
           <label className={rotulo}>Salário mínimo de referência (R$)</label>
@@ -128,7 +162,7 @@ export default function RegrasRigidas() {
           />
         </div>
         <p className="text-xs italic text-observa-petroleo/70 sm:pt-7">
-          O teto legal é ¼ deste salário mínimo, comparado em centavos (sem arredondamento que
+          O teto legal é ¼ deste salário-mínimo, comparado em centavos (sem arredondamento que
           altere a fração).
         </p>
       </DispositivoNorma>
@@ -136,7 +170,13 @@ export default function RegrasRigidas() {
       {/* §4º — vedação de acumulação */}
       <DispositivoNorma
         dispositivo={DISPOSITIVOS.p4}
-        fundamento="Condição estrita: acumular benefício vedado da seguridade barra a concessão (vedação de conceder), salvo as exceções legais."
+        fundamento={
+          <>
+            Functor deôntico de vedação: acumular benefício vedado da seguridade obsta a concessão,
+            salvo as exceções legais. A condição é estrita e seu antecedente, booleano — subsume-se
+            sem ponderação.
+          </>
+        }
       >
         <div className="flex items-center gap-2">
           <input

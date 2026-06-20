@@ -11,6 +11,7 @@ import { obterGrafo } from '../api'
 import PainelComplexidade from './PainelComplexidade'
 import PainelDispositivo from './PainelDispositivo'
 import Citacao from '../componentes/Citacao'
+import NotaCitacao from '../componentes/NotaCitacao'
 import { DISPOSITIVOS } from '../citacoes'
 import { Revelar } from '../animacao/Revelar'
 
@@ -30,12 +31,16 @@ export default function GrafoDaNorma() {
     <div className="flex flex-col gap-6">
       <Revelar>
         <p className="text-sm leading-relaxed text-observa-petroleo/80">
-          A norma do art. 20 da LOAS não é uma regra única: é um encadeamento de condições. Este
-          mapa é <strong>navegável</strong> — arraste para mover, dê <strong>zoom</strong> e{' '}
-          <strong>clique num nó</strong> para estudar aquele comando da lei. Verde = condição
-          satisfeita; vermelho = condição barrou; amarelo = indeterminado. O sistema aplica a norma
-          percorrendo este caminho por subsunção; o jurista só entra externamente, no estudo social,
-          quando o estado fica indeterminado.
+          O art. 20 da LOAS não é uma regra única, mas um encadeamento de condições — estrutura cujo
+          número de caminhos independentes é medido pela <strong>complexidade ciclomática</strong>.
+          Este mapa é <strong>navegável</strong>: arraste para mover, aplique <strong>zoom</strong>{' '}
+          e <strong>clique num nó</strong> para estudar o dispositivo correspondente. Verde =
+          condição satisfeita; vermelho = condição que barra; amarelo = estado indeterminado. O
+          sistema <strong>aplica</strong> a norma percorrendo o grafo por <strong>subsunção</strong>{' '}
+          do caso a cada condição; o jurista intervém de modo externo, no estudo social, apenas
+          quando o estado se torna indeterminado — formalizar essa estrutura como sistema lógico é o
+          estado da arte do direito computável.
+          <NotaCitacao id="LN03-u01" />
         </p>
       </Revelar>
 
@@ -83,7 +88,7 @@ export default function GrafoDaNorma() {
 
       <p className="text-xs italic text-observa-petroleo/70">
         {grafo?._origem === 'motor'
-          ? 'Grafo produzido pelo motor da norma.'
+          ? 'Grafo produzido pelo motor da norma; cada nó terminal corresponde a um functor deôntico ou à abertura valorativa.'
           : 'Grafo de demonstração (o motor não respondeu). A forma espelha a saída real.'}
       </p>
     </div>

@@ -1,6 +1,7 @@
 /* Caput anotado — o texto literal do dispositivo com os trechos que viram operadores
- * lógicos realçados e marcados com o símbolo (∨ ∧ ¬ <). Pedagógico: mostra que a
- * gramática de superfície ("e") nem sempre é o operador deôntico (aqui, ∨).
+ * deônticos realçados e marcados com o símbolo (∨ ∧ ¬ <). Pedagógico: evidencia que a
+ * gramática de superfície ("e") nem sempre corresponde ao operador deôntico (aqui, ∨),
+ * distinção que importa para a subsunção correta do antecedente.
  *
  * Props: texto (string literal), realces [{ trecho, simbolo, titulo }].
  * Casa exata por substring; trecho não encontrado é simplesmente ignorado (sem quebrar).

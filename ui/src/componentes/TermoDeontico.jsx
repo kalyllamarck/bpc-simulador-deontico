@@ -1,5 +1,6 @@
-/* Termo deôntico — etiqueta sóbria de um operador lógico (∨ ∧ ¬ <) ou functor (O P F).
- * Mostra o símbolo num selo e o nome ao lado. Usada na tradução do caput e no drill-down.
+/* Termo deôntico — etiqueta sóbria de um operador deôntico (∨ ∧ ¬ <) ou de um functor
+ * deôntico (O P F). Mostra o símbolo num selo e o nome ao lado. Usada na tradução do
+ * caput e no drill-down do grafo.
  */
 export default function TermoDeontico({ simbolo, nome, variante = 'operador' }) {
   const cor =

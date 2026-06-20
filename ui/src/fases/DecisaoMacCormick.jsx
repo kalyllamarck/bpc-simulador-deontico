@@ -39,13 +39,18 @@ export default function DecisaoMacCormick() {
   return (
     <div className="flex flex-col gap-6">
       <p className="text-sm leading-relaxed text-observa-petroleo/80">
-        MacCormick distingue duas camadas de justificação
-        <NotaCitacao id="MC01-u01" />. A primeira é dedutiva: se o caso cabe no silogismo, a
-        conclusão decorre direto. Quando o silogismo não fecha, sobe-se à segunda ordem, que
-        pergunta se a decisão é universalizável, consistente com o sistema e coerente com seus
-        princípios. Quando o silogismo fecha, o sistema aplica a norma e a conclusão decorre da
-        subsunção; quando não fecha, estrutura a justificação de 2ª ordem e, persistindo a
-        indeterminação, o caso escala para o estudo social.
+        MacCormick distingue duas ordens de justificação
+        <NotaCitacao id="MC01-u01" />. A justificação de primeira ordem é dedutiva: estabelecida a
+        premissa maior (a norma) e a premissa menor (o fato), a conclusão decorre por subsunção. A
+        justificação de segunda ordem só é exigida quando o silogismo dedutivo não fecha — por
+        indeterminação semântica ou por derrotabilidade da premissa maior —, e submete a decisão a
+        três testes: universalizabilidade, consistência com as normas válidas e coerência com os
+        princípios do sistema. Quando o silogismo fecha, o sistema aplica a norma por subsunção;
+        quando não fecha, estrutura a justificação de segunda ordem e, persistindo a indeterminação,
+        escala o caso para o estudo social. No BPC, o caráter derrotável do critério econômico do
+        §3º — afastado pelo §11 e calibrado pela jurisprudência do STF no RE 567.985/MT — é o que
+        impede o fechamento dedutivo e desloca a aferição para a segunda ordem
+        <NotaCitacao id="KP01-u01" />.
       </p>
 
       <Citacao

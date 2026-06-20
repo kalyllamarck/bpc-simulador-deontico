@@ -1,8 +1,9 @@
 /* DispositivoNorma — bloco reutilizável de um dispositivo do art. 20.
  *
- * Estrutura fixa (de cima para baixo): TEXTO DA NORMA citado → FORMULÁRIO de coleta
- * → fundamento. Reusa os campos da norma. Cada fase 2 monta vários destes, na ordem
- * da lei.
+ * Estrutura fixa (de cima para baixo): TEXTO DA NORMA citado (o antecedente normativo) →
+ * FORMULÁRIO de coleta do antecedente de fato → fundamento da subsunção. A fase 2 monta
+ * vários destes, na ordem da lei. A prop `fundamento` aceita texto ou nós React, o que
+ * permite ancorar notas de citação <NotaCitacao /> na própria afirmação.
  */
 import Citacao from '../componentes/Citacao'
 

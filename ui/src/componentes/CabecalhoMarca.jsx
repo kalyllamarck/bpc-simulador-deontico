@@ -3,6 +3,8 @@
  * Correção da auditoria: logo maior, nome "ObservaSocial" por extenso ao lado,
  * com contraste garantido (texto branco sobre o verde-petróleo escuro).
  */
+import NotaCitacao from './NotaCitacao'
+
 export default function CabecalhoMarca() {
   return (
     <header className="bg-observa-petroleo text-white shadow">
@@ -22,11 +24,14 @@ export default function CabecalhoMarca() {
             </span>
           </div>
           <div className="text-sm font-medium leading-tight text-white">
-            Simulador de aplicabilidade da norma do BPC — extensão didática do artigo
+            Simulador de aplicabilidade da norma do benefício de prestação continuada — extensão
+            didática do artigo
           </div>
           <div className="text-xs leading-tight text-white/80">
-            Benefício de Prestação Continuada · o sistema aplica a norma por subsunção; o jurista
-            entra externamente, no estudo social, quando o estado fica indeterminado
+            Benefício de prestação continuada, prestação de assistência social (art. 203, V)
+            <NotaCitacao id="RD01-u01" /> · o sistema aplica a norma por subsunção; o jurista
+            intervém externamente, no estudo social, quando o estado normativo permanece
+            indeterminado
           </div>
         </div>
       </div>

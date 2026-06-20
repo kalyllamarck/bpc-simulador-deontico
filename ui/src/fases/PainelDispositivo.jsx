@@ -113,7 +113,7 @@ export default function PainelDispositivo({ noId, rotulo, dispositivo, onFechar 
       {ehTerminal ? (
         <div className="rounded-marca bg-observa-fundo p-3">
           <p className="text-xs leading-relaxed text-observa-petroleo/80">
-            Desfecho da norma (functor terminal).{' '}
+            Nó terminal da norma: aqui a subsunção encerra-se num <strong>functor deôntico</strong>.{' '}
             {functorTerminal ? (
               <>
                 <TermoDeontico
@@ -124,7 +124,11 @@ export default function PainelDispositivo({ noId, rotulo, dispositivo, onFechar 
                 — {functorTerminal.glosa}.
               </>
             ) : (
-              'Indeterminado: não é functor, e sim a abertura para o estudo social (DC-09).'
+              <>
+                Estado indeterminado: não há functor, e sim a abertura — derrotável por nova
+                informação — para a camada valorativa no estudo social (DC-09).
+                <NotaCitacao id="A001-u01" />
+              </>
             )}
           </p>
         </div>

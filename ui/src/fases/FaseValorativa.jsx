@@ -11,6 +11,7 @@ import AncoraMetodologica from './AncoraMetodologica'
 import ExplicacaoAlexy from './ExplicacaoAlexy'
 import ExplicacaoMuller from './ExplicacaoMuller'
 import { OrigemDado } from '../componentes/Resultado'
+import NotaCitacao from '../componentes/NotaCitacao'
 
 export default function FaseValorativa() {
   const { caso, registrarResultado } = useCaso()
@@ -34,10 +35,14 @@ export default function FaseValorativa() {
   return (
     <div className="flex flex-col gap-6">
       <p className="text-sm leading-relaxed text-observa-petroleo/80">
-        Quando as regras rígidas não fecham — a renda supera o ¼, mas o §11 admite outros elementos
-        de miserabilidade —, abre-se o resíduo valorativo. Aqui o jurista escolhe, de forma
-        explícita, o método de valoração. O sistema apenas estrutura o argumento; a decisão continua
-        sendo humana.
+        Quando as regras rígidas não fecham — a renda supera o ¼ do salário mínimo, mas o §11 admite
+        outros elementos de <strong>miserabilidade</strong> —, abre-se o{' '}
+        <strong>resíduo valorativo</strong>: a zona de penumbra em que o conceito legal é
+        indeterminado e a subsunção definitiva cede a novas razões
+        <NotaCitacao id="DOC005-u01" />. Nesse intervalo o jurista fixa, de forma explícita, a
+        âncora metodológica da concretização. A IA interpreta o caso e propõe o grau do resíduo; a
+        linha determinística aplica a norma e decide o gate. A interpretação da IA jamais substitui
+        essa decisão.
       </p>
 
       <div>
@@ -68,10 +73,12 @@ export default function FaseValorativa() {
       {resultado && (
         <>
           <p className="rounded-marca border-l-4 border-observa-menta bg-observa-menta/10 p-3 text-xs leading-relaxed text-observa-petroleo/85">
-            A IA interpreta e propõe o grau de miserabilidade — o resíduo valorativo do art. 20, §11
-            (a saída traz <code>decide: falso</code>: este módulo não fecha o gate sozinho). A linha
-            determinística decide; persistindo a indeterminação valorativa, o caso escala para o
-            estudo social.
+            A IA interpreta o caso e <strong>propõe</strong> o grau do resíduo valorativo de
+            miserabilidade do art. 20, §11 — a saída traz <code>decide: falso</code>: este módulo
+            não fecha o gate sozinho. A linha determinística aplica a norma e decide; persistindo a{' '}
+            <strong>indeterminação valorativa</strong>, o caso escala para o estudo social
+            <NotaCitacao id="A001-u01" />, onde a derrotabilidade da conclusão se resolve com novos
+            elementos fáticos.
           </p>
           <OrigemDado origem={resultado._origem} />
         </>

@@ -83,8 +83,8 @@ export default function App() {
           {/* Faixa de protótipo — mantida */}
           <div className="bg-observa-menta/15 text-center text-xs font-semibold text-observa-petroleo/85">
             <div className="mx-auto max-w-5xl px-4 py-1.5">
-              PROTÓTIPO / ILUSTRATIVO — sem execução empírica real. A IA apenas interpreta e propõe;
-              jamais decide.
+              PROTÓTIPO / ILUSTRATIVO — sem execução empírica real. O sistema aplica a norma por
+              subsunção; a IA apenas interpreta e propõe, jamais decide.
             </div>
           </div>
 
@@ -102,7 +102,7 @@ export default function App() {
                     : 'border border-observa-borda bg-white text-observa-petroleo/80'
                 }`}
               >
-                {complementar ? '← Voltar aos 6 passos' : 'Impacto e art. 201'}
+                {complementar ? '← Voltar aos 6 passos' : 'Impacto e equilíbrio do art. 201'}
               </button>
             </div>
           </div>
@@ -140,7 +140,8 @@ export default function App() {
           </main>
 
           <footer className="border-t border-observa-borda bg-white py-3 text-center text-xs text-observa-petroleo/70">
-            ObservaSocial · Pesquisa em Políticas Sociais · publicação futura em
+            ObservaSocial · Pesquisa em Políticas Sociais · benefício de prestação continuada,
+            prestação de assistência social (art. 203, V) · publicação futura em
             aluno.lamarck.adv.br/profeduardo
           </footer>
         </div>

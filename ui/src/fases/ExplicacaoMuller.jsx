@@ -8,12 +8,22 @@ export default function ExplicacaoMuller({ resultado }) {
     <div className="flex flex-col gap-4">
       <p className="text-sm leading-relaxed text-observa-petroleo/85">
         Para Müller, a norma não está pronta no texto: ela se <strong>concretiza</strong>
-        <NotaCitacao id="DOC003-u01" /> no caso. A norma tem duas faces — o{' '}
-        <strong>programa da norma</strong> (o que o texto e seu sentido delimitam) e o
-        <strong> âmbito da norma</strong> (o recorte da realidade que ela governa). Decidir é
-        tensionar os dois. No código por trás, o sistema separa programa e âmbito e expõe a tensão —
-        sem fechar o gate sozinho: persistindo o resíduo valorativo indeterminado, o caso escala
-        para o estudo social.
+        <NotaCitacao id="DOC003-u01" /> no processo real de decisão. A concretização opera entre
+        dois polos — o <strong>programa da norma</strong> (a ideia normativa orientadora, o que o
+        texto e seu sentido delimitam) e o <strong>âmbito da norma</strong> (a estrutura material, o
+        recorte da realidade que ela governa). Concretizar é tensionar os dois. No código por trás,
+        o sistema separa programa e âmbito e <strong>expõe</strong> a tensão, sem fechar o gate
+        sozinho.
+      </p>
+
+      <p className="text-sm leading-relaxed text-observa-petroleo/85">
+        O que sobra dessa tensão é o <strong>resíduo valorativo</strong>: a orla de imprecisão que
+        toda regra carrega entre o núcleo de certeza e a zona de penumbra
+        <NotaCitacao id="DOC005-u01" />. Persistindo essa <strong>indeterminação valorativa</strong>
+        , a conclusão é derrotável — cede a novos elementos
+        <NotaCitacao id="A001-u01" /> — e o caso escala para o estudo social. A IA interpreta e{' '}
+        <strong>propõe</strong> o grau do resíduo; a linha determinística aplica a norma e decide o
+        gate.
       </p>
 
       <Citacao

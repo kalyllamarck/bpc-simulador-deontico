@@ -4,6 +4,7 @@
  * linha da trilha é traduzida() — nenhum token cru (O_CONCEDER, baseline…) na tela.
  */
 import { functor, traduzir } from '../lexico'
+import NotaCitacao from './NotaCitacao'
 
 const CLASSE_SINAL = {
   verde: { ponto: 'bg-sinal-verde', texto: 'text-sinal-verde', borda: 'border-sinal-verde' },
@@ -28,8 +29,8 @@ export function OrigemDado({ origem }) {
   return (
     <p className="text-xs italic text-observa-petroleo/70">
       {origem === 'motor'
-        ? 'Resultado produzido pelo motor da norma.'
-        : 'Demonstração com dado de exemplo (o motor não respondeu). Os valores espelham a forma real da saída.'}
+        ? 'Resultado produzido por subsunção no motor da norma.'
+        : 'Demonstração com dado de exemplo (o motor não respondeu). Os valores reproduzem a forma da saída real.'}
     </p>
   )
 }
@@ -50,7 +51,9 @@ export default function Resultado({ resposta }) {
         {resposta.renda_per_capita_centavos != null && (
           <p className="mt-3 text-sm text-observa-petroleo/80">
             Renda familiar per capita apurada:{' '}
-            <strong>{reaisDeCentavos(resposta.renda_per_capita_centavos)}</strong>/mês.
+            <strong>{reaisDeCentavos(resposta.renda_per_capita_centavos)}</strong>/mês — limiar que
+            opera como proxy legal do mínimo existencial
+            <NotaCitacao id="LN07-u01" /> exigível na prestação de assistência social.
           </p>
         )}
         {resposta.motivo && (

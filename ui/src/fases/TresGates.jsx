@@ -3,12 +3,21 @@
  * a justificação sobe a estes portões. O sistema aplica a norma e estrutura a
  * justificação; persistindo a indeterminação, o caso escala para o estudo social.
  */
+import NotaCitacao from '../componentes/NotaCitacao'
+
 export default function TresGates({ gates }) {
   if (!gates) return null
   return (
     <div className="rounded-marca border border-observa-borda bg-white p-5 shadow-carta">
       <p className="text-xs font-semibold uppercase tracking-wide text-observa-petroleo/70">
         Justificação de 2ª ordem — três portões deônticos
+      </p>
+      <p className="mt-2 text-sm leading-relaxed text-observa-petroleo/80">
+        Não fechando o silogismo dedutivo, o sistema submete a decisão a três testes de MacCormick
+        <NotaCitacao id="MC01-u01" />: universalizabilidade (a solução vale para todo caso do mesmo
+        tipo), consistência (não contradiz norma válida) e coerência (alinha-se aos princípios do
+        sistema). Os três testes estruturam a justificação; persistindo a indeterminação, o caso
+        escala para o estudo social.
       </p>
       <ul className="mt-3 flex flex-col gap-3">
         {gates.map((g) => {
@@ -19,7 +28,7 @@ export default function TresGates({ gates }) {
               <span className={`mt-1.5 inline-block h-3 w-3 shrink-0 rounded-full ${ponto}`} />
               <div>
                 <p className={`text-sm font-semibold ${cor}`}>
-                  {g.nome} — {g.passou ? 'satisfeito' : 'em aberto (juízo do jurista)'}
+                  {g.nome} — {g.passou ? 'satisfeito' : 'em aberto (indeterminação remanescente)'}
                 </p>
                 <p className="mt-0.5 text-sm leading-relaxed text-observa-petroleo/85">
                   {g.explicacao}

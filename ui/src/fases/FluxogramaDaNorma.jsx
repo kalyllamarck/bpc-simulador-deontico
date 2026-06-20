@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import { obterGrafo } from '../api'
 import { tipoDestino } from '../dominio/grafo'
 import { Revelar, RevelarSequencia, RevelarItem } from '../animacao/Revelar'
+import NotaCitacao from '../componentes/NotaCitacao'
 
 const ESTILO_RAMO = {
   concede: 'border-sinal-verde text-sinal-verde',
@@ -33,11 +34,15 @@ export default function FluxogramaDaNorma() {
     <div className="flex flex-col gap-6">
       <Revelar>
         <p className="text-sm leading-relaxed text-observa-petroleo/80">
-          A norma aplicada vira um <strong>fluxo</strong>: cada dispositivo é um ponto de decisão,
-          testado na ordem da lei. Leia de cima para baixo. Onde uma condição barra, o caminho
-          termina; onde é satisfeita, avança ao próximo dispositivo. No <strong>§11</strong> a{' '}
-          <strong>camada valorativa</strong> se acopla — é o único ponto com resíduo de
-          interpretação.
+          A norma aplicada assume a forma de um <strong>fluxo</strong>: cada dispositivo é um nó de
+          decisão, testado na ordem da lei. Percorrido de cima para baixo, o sistema realiza a{' '}
+          <strong>subsunção</strong> do caso a cada comando. Onde a condição não se satisfaz, o
+          caminho atinge um <strong>nó terminal</strong> que barra; onde se satisfaz, avança ao
+          dispositivo seguinte. Somente no <strong>art. 20, §11</strong> a{' '}
+          <strong>camada valorativa</strong> se acopla — único ponto em que resta{' '}
+          <strong>indeterminação valorativa</strong>, pois ali a regra exibe núcleo de certeza
+          circundado por uma zona de penumbra.
+          <NotaCitacao id="DOC005-u01" />
         </p>
       </Revelar>
 
@@ -63,7 +68,7 @@ export default function FluxogramaDaNorma() {
                     <p className="text-xs text-observa-petroleo/60">{no.dispositivo}</p>
                     {valorativo && (
                       <p className="mt-1 inline-block rounded bg-observa-menta/20 px-2 py-0.5 text-[0.7rem] font-semibold text-observa-petroleo">
-                        ↳ acopla a camada valorativa (resíduo de miserabilidade)
+                        ↳ acopla a camada valorativa (indeterminação valorativa da miserabilidade)
                       </p>
                     )}
                     <div className="mt-2 flex flex-col gap-1.5">
@@ -94,7 +99,8 @@ export default function FluxogramaDaNorma() {
           {grafo._origem === 'motor'
             ? 'Fluxo produzido pelo motor da norma.'
             : 'Fluxo de demonstração (o motor não respondeu). A ordem espelha a saída real.'}{' '}
-          A seguir, o mesmo encadeamento como <strong>grafo navegável</strong>, comando a comando.
+          A seguir, o mesmo encadeamento como <strong>grafo navegável</strong>, dispositivo a
+          dispositivo, com a métrica de <strong>complexidade ciclomática</strong> da norma.
         </p>
       </Revelar>
     </div>
